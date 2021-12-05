@@ -13,7 +13,6 @@ namespace Archive.Logic.Services
     public class DocumentBuilderService : IDocumentBuilderService, IDisposable
     {
         private readonly ICachedCollection<ITextDocument> _cachedDocuments;
-        private readonly List<ITextDocument> _buildedDocuments;
         private bool disposedValue;
         private readonly object _locker;
 
@@ -22,7 +21,6 @@ namespace Archive.Logic.Services
         {
             _locker = new object();
             _cachedDocuments = new CachedCollection<ITextDocument>();
-            _buildedDocuments = new List<ITextDocument>();
         }
 
 
