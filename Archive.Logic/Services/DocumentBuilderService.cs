@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Archive.Logic.Documents;
 using Archive.Logic.Exceptions;
@@ -12,6 +13,7 @@ namespace Archive.Logic.Services
     public class DocumentBuilderService : IDocumentBuilderService, IDisposable
     {
         private readonly ICachedCollection<ITextDocument> _cachedDocuments;
+        private readonly List<ITextDocument> _buildedDocuments;
         private bool disposedValue;
         private readonly object _locker;
 
@@ -20,6 +22,7 @@ namespace Archive.Logic.Services
         {
             _locker = new object();
             _cachedDocuments = new CachedCollection<ITextDocument>();
+            _buildedDocuments = new List<ITextDocument>();
         }
 
 
@@ -45,24 +48,25 @@ namespace Archive.Logic.Services
 
             documentInfos
                 .AsParallel()
-                .Select(x => BuildDocment(x))
-                .ForAll(x =>
+                .Select(x => BuildDocument(x))
+                .ForAll(y =>
                 {
                     lock (_locker)
                     {
-                        result.Add(x);
-                        Builded?.Invoke(x);
+                        result.Add(y);
+                        Builded?.Invoke(y);
                     }
                 });
 
             return result;
         }
 
-        private ITextDocument BuildDocment(IDocumentInfo documentInfo)
+        private ITextDocument BuildDocument(IDocumentInfo documentInfo)
         {
             ITextDocument textDocument = Create(documentInfo);
-            textDocument.Documents = BuildReferenceDocuments(documentInfo.References);
 
+            textDocument.Documents = BuildReferenceDocuments(documentInfo.References);
+            
             return textDocument;
         }
 
@@ -83,9 +87,9 @@ namespace Archive.Logic.Services
                     continue;
                 }
 
-                document = Create(documentInfo);
-                references.Add(document);
-                _cachedDocuments.Add(document);
+                ITextDocument textDocument = Create(documentInfo);
+                references.Add(textDocument);
+                _cachedDocuments.Add(textDocument);
             }
 
             return references;

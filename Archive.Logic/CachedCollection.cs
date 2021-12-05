@@ -43,7 +43,7 @@ namespace Archive.Logic
             return _collection.Contains(item);
         }
 
-        public T Find(object key)
+        public T? Find(object key)
         {
             for (int i = 0; i < _collection.Count; i++)
             {
@@ -53,7 +53,7 @@ namespace Archive.Logic
                 {
                     foreach (PropertyInfo property in itemType.GetProperties())
                     {
-                        object? propertyValue = property.GetValue(itemType);
+                        object? propertyValue = property.GetValue(_collection[i]);
 
                         if (propertyValue is not null && 
                             propertyValue.Equals(key))
@@ -64,7 +64,7 @@ namespace Archive.Logic
                 }
             }
 
-            throw new ObjectNotFoundException("Объект не найден в кеше!");
+            return default;
         }
     }
 }

@@ -4,14 +4,13 @@ using System.Linq;
 
 using Archive.Logic.Interfaces;
 
-using Microsoft.Office.Interop.Word;
+using Spire.Doc;
 
 namespace Archive.Logic.Documents
 {
-    public class WordDocument : ITextDocument, IPrintableDocument
+    public class WordDocument : ITextDocument
     {
         private readonly IDocumentInfo _documentInfo;
-        private readonly Application _wordApplication;
         private readonly Document _currentDocument;
         private bool disposedValue;
 
@@ -21,9 +20,7 @@ namespace Archive.Logic.Documents
             ArgumentNullException.ThrowIfNull(documentInfo);
 
             _documentInfo = documentInfo;
-            _wordApplication = new Application();
-            _currentDocument = _wordApplication.Documents
-                .Add(_documentInfo.RootDocument.FullName);
+            _currentDocument = new Document(documentInfo.RootDocument.FullName);
         }
 
 
@@ -31,7 +28,7 @@ namespace Archive.Logic.Documents
         {
             get
             {
-                string stringNumber = _documentInfo.RootDocument.Name.Split(',')[0];
+                string stringNumber = _documentInfo.RootDocument.Name.Split('.')[0];
                 
                 if (int.TryParse(stringNumber, out int number))
                     return number;
@@ -44,7 +41,7 @@ namespace Archive.Logic.Documents
             _documentInfo.RootDocument.Name;
 
         public string Text => 
-            _currentDocument.Content.Text;
+            _currentDocument.GetText();
 
         public string Path => 
             _documentInfo.RootDocument.FullName;
@@ -62,15 +59,27 @@ namespace Archive.Logic.Documents
             Documents = documents.ToList();
         }
 
-        public void Print()
-        {
-            _currentDocument.PrintOut();
-        }
-
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is not null && obj is ITextDocument doc)
+            {
+                return  this.Number == doc.Number &&
+                        this.Title == doc.Title &&
+                        this.Path == doc.Path;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         private void Dispose(bool disposing)
@@ -79,8 +88,8 @@ namespace Archive.Logic.Documents
             {
                 if (disposing)
                 {
-                    _currentDocument.Close(SaveChanges: true);
-                    _wordApplication.Quit(SaveChanges: true);
+                    _currentDocument.Close();
+                    _currentDocument.Dispose();
                     Documents?.Clear();
                 }
 

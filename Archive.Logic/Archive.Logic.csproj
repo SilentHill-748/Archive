@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FreeSpire.Doc" Version="9.9.7" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Archive.Data\Archive.Data.csproj" />
   </ItemGroup>
 

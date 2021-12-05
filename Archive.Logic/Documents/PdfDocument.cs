@@ -13,7 +13,6 @@ namespace Archive.Logic.Documents
     {
         private readonly IDocumentInfo _documentInfo;
         private bool disposedValue;
-        private bool disposedValue1;
 
         public PdfDocument(IDocumentInfo documentInfo)
         {
@@ -46,14 +45,14 @@ namespace Archive.Logic.Documents
 
         private void Dispose(bool disposing)
         {
-            if (!disposedValue1)
+            if (!disposedValue)
             {
                 if (disposing)
                 {
                     
                 }
 
-                disposedValue1 = true;
+                disposedValue = true;
             }
         }
     }

@@ -35,7 +35,7 @@ namespace Archive.Logic.Interfaces
         /// <returns>Найденный объект.</returns>
         /// <exception cref="ArgumentNullException"/>
         /// <exception cref="ObjectNotFoundException"/>
-        T Find(object Key);
+        T? Find(object Key);
         /// <summary>
         /// Выполняет полную очистку коллекции.
         /// </summary>

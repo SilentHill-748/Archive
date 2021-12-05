@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
-using System.IO;
 
 using NUnit.Framework;
 
 using Archive.Logic.Services;
 using Archive.Logic.Interfaces;
-using Archive.Logic.Documents;
-using Archive.Logic.Exceptions;
-using Archive.Test.TestModels;
 
 namespace Archive.Test.Services
 {
     public class ParsingServiceTests
     {
-        private string _filename;
+        private readonly string _filename;
 
 
         public ParsingServiceTests()
@@ -47,48 +42,11 @@ namespace Archive.Test.Services
         {
             ParsingService parser = new(_filename);
 
-            List<IDocumentInfo> expected = GetExpectedCollection();
+            List<IDocumentInfo> expected = Help.GetDocumentInfoCollection();
 
             List<IDocumentInfo> actual = parser.Parse();
 
             CollectionAssert.AreEquivalent(expected, actual);
-        }
-
-        private static List<IDocumentInfo> GetExpectedCollection()
-        {
-            XmlSerializer serializer = new(typeof(Arguments));
-
-            Arguments? documentArgumentsCollection = (Arguments?)serializer.Deserialize(GetXmlFileStream());
-
-            if (documentArgumentsCollection is null)
-                throw new Exception("Не получается десериализовать xml файл!");
-
-            List<IDocumentInfo> result = new();
-
-            foreach (DocumentArguments arguments in documentArgumentsCollection.DocumentArgs)
-            {
-                result.Add(new DocumentInfo(new string[]
-                {
-                    arguments.RootDocument,
-                    arguments.KeyWords,
-                    string.Join(",", arguments.References)
-                }));
-            }
-
-            return result;
-        }
-
-        private static Stream GetXmlFileStream()
-        {
-            string xmlResourcePath = "Archive.Test.TestModels.TestExpectedArguments.xml";
-
-            Stream? xmlStream = typeof(ParsingServiceTests).Assembly
-                .GetManifestResourceStream(xmlResourcePath);
-
-            if (xmlStream is null)
-                throw new CannotReadManifestResourceStream();
-
-            return xmlStream;
         }
     }
 }
