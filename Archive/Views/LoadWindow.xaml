@@ -1,0 +1,98 @@
+﻿<Window x:Class="Archive.Views.LoadWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Archive.Views"
+        xmlns:VM="clr-namespace:Archive.ViewModels"
+        mc:Ignorable="d"
+        Title="Загрузить документы..."
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        FontSize="15"
+        Width="470"
+        Height="200"
+        d:DataContext="{d:DesignInstance VM:LoadWindowViewModel}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <ProgressBar Grid.Row="1"
+                     Margin="20 15"
+                     Maximum="{Binding Model.LoadingDocumentsCount}"
+                     Value="{Binding Model.LoadedDocumentsCount}"
+                     Name="ProgressBar"
+                     Visibility="Hidden"
+                     BorderThickness="0.5"
+                     BorderBrush="Black">
+        </ProgressBar>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.25*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="0.05*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="0.25*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.5*"/>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Column="1"
+                    Grid.Row="1"
+                    Name="SelectFilesButton"
+                    Content="Выбрать файлы..."
+                    Padding="5 0"
+                    Command="{Binding SelectPathCommand}"
+                    CommandParameter="{Binding ElementName=PathToFilesTextBlock}"/>
+
+            <TextBox Grid.Column="3"
+                     Grid.Row="1"
+                     Name="PathToFilesTextBlock"
+                     IsReadOnly="True"
+                     BorderBrush="Gray"
+                     BorderThickness="1"
+                     FontSize="12"
+                     VerticalContentAlignment="Center"
+                     Text="{Binding Model.SelectedPath, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.5*"/>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Column="1"
+                    Grid.Row="1"
+                    Name="CancelButton"
+                    Content="Отмена"
+                    Click="CancelButton_Click"/>
+
+            <Button Grid.Column="3"
+                    Grid.Row="1"
+                    Name="LoadFilesButton"
+                    Content="Загрузить"
+                    Click="LoadFilesButton_Click"
+                    CommandParameter="{Binding Model.SelectedPath}"
+                    Command="{Binding LoadFilesCommand}"/>
+        </Grid>
+    </Grid>
+</Window>

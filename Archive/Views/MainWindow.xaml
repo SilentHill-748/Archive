@@ -1,0 +1,176 @@
+﻿<Window x:Class="Archive.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:Archive.Views"
+        xmlns:VM="clr-namespace:Archive.ViewModels"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Главное окно программы" 
+        MinHeight="620"
+        MinWidth="960"
+        Height="620"
+        Width="960"
+        ResizeMode="CanResizeWithGrip"
+        FontSize="14"
+        d:DataContext="{d:DesignInstance VM:MainViewModel}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition MinWidth="400"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+
+        <Menu Grid.ColumnSpan="7">
+            <MenuItem Header="Документы">
+                <MenuItem Name="OpenLoadWindowItem"
+                          Header="Загрузить из каталога"
+                          Click="OpenLoadWindowItem_Click"/>
+            </MenuItem>
+
+            <MenuItem Header="Информация" Background="White">
+                <MenuItem Header="Справка"/>
+                <MenuItem Name="AboutItem"
+                          Header="О программе..."
+                          Click="AboutItem_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <GroupBox Grid.Row="1"
+                  Grid.Column="1"
+                  Header="Настройка поиска"
+                  BorderBrush="Black"
+                  BorderThickness="1">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBox Grid.Row="0"
+                             BorderBrush="Black"
+                             x:Name="SearchInputField">
+                        <TextBox.ToolTip>
+                            <TextBlock>
+                                Для поиска вводите подзапросы через запятую:<LineBreak/>
+                                Калан, Белка, медведь, 005, Лосось.<LineBreak/>
+                                Где 005 - номер документа с животным, остальные подзапросы - название документов.
+                            </TextBlock>
+                        </TextBox.ToolTip>
+                    </TextBox>
+
+                    <StackPanel Grid.Row="1"
+                                Margin="0 5"
+                                RadioButton.Checked="StackPanel_Checked">
+                        <RadioButton Content="В документе" IsChecked="True"/>
+                        <RadioButton Content="По заголовку"/>
+                        <RadioButton Content="По ключевым словам"/>
+                    </StackPanel>
+
+                    <Button Grid.Row="3" 
+                            Content="Поиск"
+                            HorizontalAlignment="Right"
+                            Padding="10 0"
+                            Margin="0 0 15 0"
+                            Command="{Binding StartSearchCommand}"
+                            CommandParameter="{Binding ElementName=SearchInputField, Path=Text}"/>
+                </Grid>
+
+                <TextBlock Grid.Row="1" Text="Документы:"/>
+
+                <!--<ListBox x:Name="ListBoxOfStoredDocuments" 
+                         Grid.Row="2"
+                         BorderBrush="Black"
+                         ItemsSource="{Binding MainModel.Documents}"
+                         DisplayMemberPath="DocumentTitle">
+                    <behaviors:Interaction.Triggers>
+                        <behaviors:EventTrigger EventName="MouseDoubleClick">
+                            <behaviors:InvokeCommandAction Command="{Binding SelectDocumentCommand}"
+                                                           CommandParameter="{Binding ElementName=ListBoxOfStoredDocuments, Path=SelectedItem}"/>
+                        </behaviors:EventTrigger>
+                    </behaviors:Interaction.Triggers>
+                </ListBox>-->
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Column="5"
+                  Grid.Row="1"
+                  BorderBrush="Black"
+                  Header="Подборка документов">
+            <Grid Margin="5">
+                <ListBox ToolTip="Подборка документов для работы" BorderBrush="Black"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="1"
+                  Grid.Column="3"
+                  Header="Результат поиска"
+                  BorderBrush="Black">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <GroupBox Header="Древо найденные документов" BorderBrush="Black">
+                    <!--<TreeView x:Name="ResponseTreeView"
+                              Margin="2"
+                              ItemsSource="{Binding MainModel.FindedDocuments}">
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding ReferenceDocuments}">
+                                <TextBlock Text="{Binding DocumentTitle}"/>
+                                <HierarchicalDataTemplate.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Title}"/>
+                                    </DataTemplate>
+                                </HierarchicalDataTemplate.ItemTemplate>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+
+                        <behaviors:Interaction.Triggers>
+                            <behaviors:EventTrigger EventName="SelectedItemChanged">
+                                <behaviors:InvokeCommandAction Command="{Binding ShowAllTextOfChosenDocumentCommand}"
+                                                               CommandParameter="{Binding ElementName=ResponseTreeView, Path=SelectedItem}"/>
+                            </behaviors:EventTrigger>
+                        </behaviors:Interaction.Triggers>
+                    </TreeView>-->
+                </GroupBox>
+
+                <GroupBox Grid.Row="1"
+                          Header="Содержание документа"
+                          BorderBrush="Black">
+                    <!--<FlowDocumentScrollViewer Margin="5 10 5 5">
+                        <FlowDocument ColumnWidth="{Binding RelativeSource={RelativeSource Self}, Path=PageWidth}"
+                                      FontFamily="Times New Roman">
+                            <Paragraph TextAlignment="Justify"
+                                       Padding="0">
+                                <Run Text="{Binding MainModel.Text}"/>
+                            </Paragraph>
+                        </FlowDocument>
+                    </FlowDocumentScrollViewer>-->
+                </GroupBox>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Window>

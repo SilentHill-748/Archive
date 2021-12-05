@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Arguments>
+	<DocumentArguments>
+		<RootDocument>C:\Users\SilentHill\Desktop\Тестовые файлы\001.Белка2.rtf</RootDocument>
+		<KeyWords>белка,белки,грызуны</KeyWords>
+		<References>
+			<string>C:\Users\SilentHill\Desktop\Тестовые файлы\008.кк рф.rtf</string>
+			<string>C:\Users\SilentHill\Desktop\Тестовые файлы\009.постановление П-156.docx</string>
+			<string>C:\Users\SilentHill\Desktop\Тестовые файлы\005.Контакты росприроднадзор.odt</string>
+		</References>
+	</DocumentArguments>
+
+	<DocumentArguments>
+		<RootDocument>C:\Users\SilentHill\Desktop\Тестовые файлы\002.Калан.odt</RootDocument>
+		<KeyWords>калан,бобр</KeyWords>
+		<References>
+			<string>C:\Users\SilentHill\Desktop\Тестовые файлы\005.Контакты росприроднадзор.odt</string>
+			<string>C:\Users\SilentHill\Desktop\Тестовые файлы\008.кк рф.rtf</string>
+		</References>
+	</DocumentArguments>
+
+	<DocumentArguments>
+		<RootDocument>C:\Users\SilentHill\Desktop\Тестовые файлы\012.Медведь.rtf</RootDocument>
+		<KeyWords>медведи,млекопитающие,хищники</KeyWords>
+		<References>
+			<string>C:\Users\SilentHill\Desktop\Тестовые файлы\004.постановление П-400.odt</string>
+			<string>C:\Users\SilentHill\Desktop\Тестовые файлы\007.админ регламент 297.rtf</string>
+			<string>C:\Users\SilentHill\Desktop\Тестовые файлы\006.Постановление П-337.odt</string>
+		</References>
+	</DocumentArguments>
+
+	<DocumentArguments>
+		<RootDocument>C:\Users\SilentHill\Desktop\Тестовые файлы\013.Лосось.rtf</RootDocument>
+		<KeyWords>лосось,лососёвые</KeyWords>
+		<References>
+			<string>C:\Users\SilentHill\Desktop\Тестовые файлы\004.постановление П-400.odt</string>
+			<string>C:\Users\SilentHill\Desktop\Тестовые файлы\010.Админ регламент 191.docx</string>
+		</References>
+	</DocumentArguments>
+</Arguments>
