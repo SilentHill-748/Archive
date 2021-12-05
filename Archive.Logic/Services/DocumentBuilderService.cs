@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 using Archive.Logic.Documents;
 using Archive.Logic.Exceptions;
@@ -10,10 +9,9 @@ using Archive.Logic.Services.Interfaces;
 
 namespace Archive.Logic.Services
 {
-    public class DocumentBuilderService : IDocumentBuilderService, IDisposable
+    public class DocumentBuilderService : IDocumentBuilderService
     {
         private readonly ICachedCollection<ITextDocument> _cachedDocuments;
-        private bool disposedValue;
         private readonly object _locker;
 
 
@@ -105,25 +103,6 @@ namespace Archive.Logic.Services
             };
 
             return textDocument;
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    _cachedDocuments.Clear();
-                }
-
-                disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }
