@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="TestModels\ExpectedMappedData.xml" />
     <None Remove="TestModels\TestExpectedArguments.xml" />
   </ItemGroup>
 
@@ -24,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="TestModels\ExpectedMappedData.xml" />
     <EmbeddedResource Include="TestModels\TestExpectedArguments.xml" />
   </ItemGroup>
 

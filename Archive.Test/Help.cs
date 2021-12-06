@@ -17,7 +17,8 @@ namespace Archive.Test
         {
             XmlSerializer serializer = new(typeof(Arguments));
 
-            Arguments? documentArgumentsCollection = (Arguments?)serializer.Deserialize(GetXmlFileStream());
+            string xmlResourcePath = "Archive.Test.TestModels.TestExpectedArguments.xml";
+            Arguments? documentArgumentsCollection = (Arguments?)serializer.Deserialize(GetXmlFileStream(xmlResourcePath));
 
             if (documentArgumentsCollection is null)
                 throw new Exception("Не получается десериализовать xml файл!");
@@ -37,12 +38,31 @@ namespace Archive.Test
             return result;
         }
 
-        private static Stream GetXmlFileStream()
+        /// <summary>
+        /// Вернет список ожидаемых объектов, которые должны быть получены в тесте маппинга.
+        /// </summary>
+        /// <returns>Список документов - корректных данных для сравнения.</returns>
+        internal static List<Document> GetExpectedMappedDocuments()
         {
-            string xmlResourcePath = "Archive.Test.TestModels.TestExpectedArguments.xml";
+            string xmlResourcePath = "Archive.Test.TestModels.ExpectedMappedData.xml";
 
+            Stream xmlStream = GetXmlFileStream(xmlResourcePath);
+
+            XmlSerializer serializer = new(typeof(DocumentCollection));
+
+            DocumentCollection documentCollection = (DocumentCollection?)serializer.Deserialize(xmlStream) ?? 
+                throw new Exception("Не получается десериализовать xml файл!");
+
+            foreach (Document document in documentCollection.Documents)
+                document.References = document.ReferenceCollection.References;
+
+            return documentCollection.Documents;
+        }
+
+        private static Stream GetXmlFileStream(string resourcePath)
+        {
             Stream? xmlStream = typeof(ParsingServiceTests).Assembly
-                .GetManifestResourceStream(xmlResourcePath);
+                .GetManifestResourceStream(resourcePath);
 
             if (xmlStream is null)
                 throw new CannotReadManifestResourceStream();

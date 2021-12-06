@@ -20,7 +20,7 @@ namespace Archive.Logic.Documents
             ArgumentNullException.ThrowIfNull(documentInfo);
 
             _documentInfo = documentInfo;
-            _currentDocument = new Document(documentInfo.RootDocument.FullName);
+            _currentDocument = new Document(documentInfo.RootDocument.FullName, FileFormat.Docx2013);
         }
 
 
@@ -49,14 +49,14 @@ namespace Archive.Logic.Documents
         public string? KeyWords => 
             _documentInfo.KeyWords;
 
-        public List<ITextDocument>? Documents { get; set; }
+        public List<ITextDocument>? RefDocuments { get; set; }
 
 
         public void SetDocuments(IEnumerable<ITextDocument> documents)
         {
             ArgumentNullException.ThrowIfNull(documents, nameof(documents));
 
-            Documents = documents.ToList();
+            RefDocuments = documents.ToList();
         }
 
         public void Dispose()
@@ -90,7 +90,7 @@ namespace Archive.Logic.Documents
                 {
                     _currentDocument.Close();
                     _currentDocument.Dispose();
-                    Documents?.Clear();
+                    RefDocuments?.Clear();
                 }
 
                 disposedValue = true;

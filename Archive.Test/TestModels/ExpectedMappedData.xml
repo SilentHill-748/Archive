@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Documents>
+	<Document Number="1"
+			  Title="001.Белка2.rtf"
+			  Path="C:\Users\SilentHill\Desktop\Тестовые файлы\001.Белка2.rtf"
+			  KeyWords="белка,белки,грызуны">
+		<ReferenceDocuments>
+			<ReferenceDocument Number="8" Title="008.кк рф.rtf" Path="C:\Users\SilentHill\Desktop\Тестовые файлы\008.кк рф.rtf"/>
+			<ReferenceDocument Number="9" Title="009.постановление П-156.docx" Path="C:\Users\SilentHill\Desktop\Тестовые файлы\009.постановление П-156.docx"/>
+			<ReferenceDocument Number="5" Title="005.Контакты росприроднадзор.odt" Path="C:\Users\SilentHill\Desktop\Тестовые файлы\005.Контакты росприроднадзор.odt"/>
+		</ReferenceDocuments>
+	</Document>
+
+	<Document Number="2"
+		  Title="002.Калан.odt"
+		  Path="C:\Users\SilentHill\Desktop\Тестовые файлы\002.Калан.odt"
+		  KeyWords="калан,бобр">
+		<ReferenceDocuments>
+			<ReferenceDocument Number="5" Title="005.Контакты росприроднадзор.odt" Path="C:\Users\SilentHill\Desktop\Тестовые файлы\005.Контакты росприроднадзор.odt"/>
+			<ReferenceDocument Number="8" Title="008.кк рф.rtf" Path="C:\Users\SilentHill\Desktop\Тестовые файлы\008.кк рф.rtf"/>
+		</ReferenceDocuments>
+	</Document>
+
+	<Document Number="12"
+		  Title="012.Медведь.rtf"
+		  Path="C:\Users\SilentHill\Desktop\Тестовые файлы\012.Медведь.rtf"
+		  KeyWords="медведи,млекопитающие,хищники">
+		<ReferenceDocuments>
+			<ReferenceDocument Number="4" Title="004.постановление П-400.odt" Path="C:\Users\SilentHill\Desktop\Тестовые файлы\004.постановление П-400.odt"/>
+			<ReferenceDocument Number="7" Title="007.админ регламент 297.rtf" Path="C:\Users\SilentHill\Desktop\Тестовые файлы\007.админ регламент 297.rtf"/>
+			<ReferenceDocument Number="6" Title="006.Постановление П-337.odt" Path="C:\Users\SilentHill\Desktop\Тестовые файлы\006.Постановление П-337.odt"/>
+		</ReferenceDocuments>
+	</Document>
+
+	<Document Number="13"
+		  Title="013.Лосось.rtf"
+		  Path="C:\Users\SilentHill\Desktop\Тестовые файлы\013.Лосось.rtf"
+		  KeyWords="лосось,лососёвые">
+		<ReferenceDocuments>
+			<ReferenceDocument Number="4" Title="004.постановление П-400.odt" Path="C:\Users\SilentHill\Desktop\Тестовые файлы\004.постановление П-400.odt"/>
+			<ReferenceDocument Number="10" Title="010.Админ регламент 191.docx" Path="C:\Users\SilentHill\Desktop\Тестовые файлы\010.Админ регламент 191.docx"/>
+		</ReferenceDocuments>
+	</Document>
+</Documents>

@@ -56,9 +56,9 @@ namespace Archive.Test.Services
                 if (!a[i].Equals(b[i]))
                     return false;
 
-                for (int j = 0; j < a[i].Documents?.Count; j++)
+                for (int j = 0; j < a[i].RefDocuments?.Count; j++)
                 {
-                    if (!a[i].Documents![j].Equals(b[i].Documents[j]))
+                    if (!a[i].RefDocuments![j].Equals(b[i].RefDocuments[j]))
                         return false;
                 }
             }

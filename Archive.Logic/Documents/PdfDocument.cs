@@ -29,7 +29,7 @@ namespace Archive.Logic.Documents
         public string Text { get; }
         public string Path { get; }
         public string? KeyWords { get; }
-        public List<ITextDocument>? Documents { get; set; }
+        public List<ITextDocument>? RefDocuments { get; set; }
 
 
         public void Print()

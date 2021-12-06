@@ -12,32 +12,30 @@ namespace Archive.Logic.Services
     {
         public List<TEntity> Map<TEntity, TRelatedEntity>(IEnumerable<ITextDocument>? documents)
         {
-            if (documents is null)
+            if (documents is null || !documents.Any())
                 return new List<TEntity>();
 
             List<TEntity> result = new();
-            TEntity? entity = (TEntity?)Activator.CreateInstance(typeof(TEntity));
 
-            if (entity is null)
-                throw new Exception($"Не удалось создать экземпляр объекта {typeof(TEntity).Name}!");
-
-            foreach (ITextDocument document  in documents)
+            foreach (ITextDocument document in documents)
             {
-                var documentProperties = GetProperties(document.GetType());
+                TEntity entity = (TEntity?)Activator.CreateInstance(typeof(TEntity)) ?? 
+                    throw new Exception($"Не получается создать экзепляр типа {typeof(TEntity)}");
+
                 var entityProperties = GetProperties(entity.GetType());
+                var documentProperties = GetProperties(document.GetType());
 
                 for (int i = 0; i < entityProperties.Length; i++)
                 {
-                    // Если на входе Document.RefDocuments
-                    if (entityProperties[i].PropertyType is List<TRelatedEntity>)
-                        entityProperties[i].SetValue(entity, Map<TRelatedEntity, TEntity>((IEnumerable<ITextDocument>?)documentProperties[i].GetValue(document)));
+                    if (entityProperties[i].PropertyType == typeof(List<TRelatedEntity>))
+                    {
+                        var realtedValues = documentProperties[i].GetValue(document);
+                        entityProperties[i].SetValue(entity, Map<TRelatedEntity, TEntity>((IEnumerable<ITextDocument>?)realtedValues));
+                        continue;
+                    }
 
-                    // Если на входе ReferenceDocument.Documents
-                    if (entityProperties[i].PropertyType is List<TEntity>)
-                        continue;// У ReferenceDocument не должно быть элементов в свойстве Documents.
-
-                    PropertyInfo property = GetProperty(documentProperties, entityProperties[i].Name);
-                    entityProperties[i].SetValue(entity, property.GetValue(document.GetType()));
+                    PropertyInfo documentProperty = GetProperty(documentProperties, entityProperties[i]);
+                    entityProperties[i].SetValue(entity, documentProperty.GetValue(document));
                 }
                 result.Add(entity);
             }
@@ -45,14 +43,14 @@ namespace Archive.Logic.Services
             return result;
         }
 
-        private static PropertyInfo GetProperty(PropertyInfo[] properties, string name)
+        private static PropertyInfo GetProperty(PropertyInfo[] properties, PropertyInfo property)
         {
-            return properties.Where(x => x.Name == name).First();
+            return properties.Where(x => x.Name.Equals(property.Name)).First();
         }
 
         private static PropertyInfo[] GetProperties(Type type)
         {
-            return type.GetProperties().OrderBy(x => x.Name).ToArray();
+            return type.GetProperties().OrderBy(x => x.PropertyType.Name).ThenBy(x => x.Name).ToArray();
         }
     }
 }

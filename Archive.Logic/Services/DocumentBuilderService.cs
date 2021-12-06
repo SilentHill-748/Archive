@@ -61,7 +61,7 @@ namespace Archive.Logic.Services
         {
             ITextDocument textDocument = Create(documentInfo);
 
-            textDocument.Documents = BuildReferenceDocuments(documentInfo.References);
+            textDocument.RefDocuments = BuildReferenceDocuments(documentInfo.References);
             
             return textDocument;
         }

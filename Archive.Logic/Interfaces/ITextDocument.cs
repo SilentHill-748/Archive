@@ -31,6 +31,6 @@ namespace Archive.Logic.Interfaces
         /// <summary>
         /// Коллекция связных документов с данным.
         /// </summary>
-        List<ITextDocument>? Documents { get; set; }
+        List<ITextDocument>? RefDocuments { get; set; }
     }
 }
