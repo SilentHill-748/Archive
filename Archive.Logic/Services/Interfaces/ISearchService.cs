@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Archive.Logic.Services.Interfaces
 {
-    public interface ISearchService
+    public interface ISearchService : IService
     {
 
     }

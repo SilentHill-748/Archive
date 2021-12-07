@@ -14,7 +14,7 @@ namespace Archive.Logic.Exceptions
             : base()
         {
             string assemblyName = type.Assembly.FullName ?? string.Empty;
-            Message = $"Не удалось найти тип {type} в сборке {assemblyName}";
+            Message = $"Не удалось найти тип для {type} в сборке {assemblyName}";
         }
 
 

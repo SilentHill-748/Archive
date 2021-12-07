@@ -5,7 +5,7 @@ using Archive.Logic.Interfaces;
 
 namespace Archive.Logic.Services.Interfaces
 {
-    public interface IDocumentBuilderService
+    public interface IDocumentBuilderService : IService
     {
         event Action<ITextDocument>? Builded;
 

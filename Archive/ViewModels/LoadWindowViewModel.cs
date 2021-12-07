@@ -26,8 +26,8 @@ namespace Archive.ViewModels
         public LoadWindowViewModel(Window view)
         {
             _model = new LoadWindowModel();
-            _builderService = ServiceFactory.GetService<DocumentBuilderService, IDocumentBuilderService>();
-            _dbService = ServiceFactory.GetService<DbService, IDbService>();
+            _builderService = ServiceFactory.GetService<IDocumentBuilderService>();
+            _dbService = ServiceFactory.GetService<IDbService>();
 
             View = view;
         }
@@ -69,7 +69,7 @@ namespace Archive.ViewModels
 
             try
             {
-                IMapperService mapper = ServiceFactory.GetService<MapperService, IMapperService>();
+                IMapperService mapper = ServiceFactory.GetService<IMapperService>();
 
                 await Task.Run(() =>
                 {

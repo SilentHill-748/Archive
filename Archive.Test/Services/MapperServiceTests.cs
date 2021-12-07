@@ -23,9 +23,9 @@ namespace Archive.Test.Services
         {
             string path = @"C:\Users\SilentHill\Desktop\Тестовые файлы\Конфиг.txt";
 
-            _parser = ServiceFactory.GetService<ParsingService, IParsingService>(path);
-            _builder = ServiceFactory.GetService<DocumentBuilderService, IDocumentBuilderService>();
-            _mapper = ServiceFactory.GetService<MapperService, IMapperService>();
+            _parser = ServiceFactory.GetService<IParsingService>(path);
+            _builder = ServiceFactory.GetService<IDocumentBuilderService>();
+            _mapper = ServiceFactory.GetService<IMapperService>();
         }
 
 

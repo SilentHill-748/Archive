@@ -4,7 +4,7 @@ using Archive.Logic.Interfaces;
 
 namespace Archive.Logic.Services.Interfaces
 {
-    public interface IMapperService
+    public interface IMapperService : IService
     {
         List<TEntity> Map<TEntity, IRelatedEntity>(IEnumerable<ITextDocument> documents);
     }
