@@ -2,6 +2,6 @@
 {
     public interface IRepositoryFactory
     {
-        IRepository<TEntity> Getrepository<TEntity>() where TEntity : class;
+        IRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
     }
 }

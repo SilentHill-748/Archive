@@ -5,12 +5,12 @@ using Archive.Logic.Interfaces;
 
 namespace Archive.Logic.Services.Interfaces
 {
-    public interface IDocumentBuilderService : IService
+    public interface IDocumentBuilderService<T> : IService
     {
-        event Action<ITextDocument>? Builded;
+        event Action<T>? Builded;
 
-        List<ITextDocument> Build(string filename);
+        List<T> Build(string filename);
 
-        List<ITextDocument> Build(IParsingService parser);
+        List<T> Build(IParsingService parser);
     }
 }

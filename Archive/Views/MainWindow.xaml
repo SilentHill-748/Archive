@@ -15,6 +15,7 @@
         Width="960"
         ResizeMode="CanResizeWithGrip"
         FontSize="14"
+        Loaded="Window_Loaded"
         d:DataContext="{d:DesignInstance VM:MainViewModel}">
 
     <Grid>
@@ -99,18 +100,18 @@
 
                 <TextBlock Grid.Row="1" Text="Документы:"/>
 
-                <!--<ListBox x:Name="ListBoxOfStoredDocuments" 
+                <ListBox x:Name="ListBoxOfStoredDocuments" 
                          Grid.Row="2"
                          BorderBrush="Black"
-                         ItemsSource="{Binding MainModel.Documents}"
-                         DisplayMemberPath="DocumentTitle">
+                         ItemsSource="{Binding MainModel.StoredDocument}"
+                         DisplayMemberPath="Title">
                     <behaviors:Interaction.Triggers>
                         <behaviors:EventTrigger EventName="MouseDoubleClick">
                             <behaviors:InvokeCommandAction Command="{Binding SelectDocumentCommand}"
                                                            CommandParameter="{Binding ElementName=ListBoxOfStoredDocuments, Path=SelectedItem}"/>
                         </behaviors:EventTrigger>
                     </behaviors:Interaction.Triggers>
-                </ListBox>-->
+                </ListBox>
             </Grid>
         </GroupBox>
 

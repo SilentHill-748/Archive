@@ -25,7 +25,7 @@ namespace Archive.Views
         {
             InitializeComponent();
 
-            DataContext = new LoadWindowViewModel(this);
+            DataContext = new LoadWindowViewModel();
         }
 
         private void LoadFilesButton_Click(object sender, RoutedEventArgs e)
@@ -35,12 +35,6 @@ namespace Archive.Views
             PathToFilesTextBlock.IsEnabled = false;
             CancelButton.IsEnabled = false;
             ProgressBar.Visibility = Visibility.Visible;
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = false;
-            this.Close();
         }
     }
 }

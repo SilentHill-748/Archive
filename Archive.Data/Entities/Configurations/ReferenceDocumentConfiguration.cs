@@ -7,7 +7,8 @@ namespace Archive.Data.Entities.Configurations
     {
         public void Configure(EntityTypeBuilder<ReferenceDocument> builder)
         {
-            builder.HasKey(d => d.Number).HasName("RefNumber");
+            builder.HasKey(d => d.Number);
+            builder.Property(d => d.Number).HasColumnName("RefNumber");
             builder.Property(d => d.Number).ValueGeneratedNever();
             builder.Property(d => d.Title).IsRequired();
             builder.Property(d => d.Path).IsRequired();

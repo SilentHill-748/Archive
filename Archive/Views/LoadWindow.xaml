@@ -12,6 +12,7 @@
         FontSize="15"
         Width="470"
         Height="200"
+        x:Name="LoadWin"
         d:DataContext="{d:DesignInstance VM:LoadWindowViewModel}">
     <Grid>
         <Grid.RowDefinitions>
@@ -62,7 +63,7 @@
                      BorderThickness="1"
                      FontSize="12"
                      VerticalContentAlignment="Center"
-                     Text="{Binding Model.SelectedPath, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding Model.ConfigurationFilePath, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
 
         <Grid Grid.Row="2">
@@ -84,14 +85,15 @@
                     Grid.Row="1"
                     Name="CancelButton"
                     Content="Отмена"
-                    Click="CancelButton_Click"/>
+                    Command="{Binding CloseCommand}"
+                    CommandParameter="{Binding ElementName=LoadWin}"/>
 
             <Button Grid.Column="3"
                     Grid.Row="1"
                     Name="LoadFilesButton"
                     Content="Загрузить"
                     Click="LoadFilesButton_Click"
-                    CommandParameter="{Binding Model.SelectedPath}"
+                    CommandParameter="{Binding ElementName=LoadWin}"
                     Command="{Binding LoadFilesCommand}"/>
         </Grid>
     </Grid>

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
+using Archive.Data.Entities;
 using Archive.Logic.Documents;
 using Archive.Logic.Exceptions;
 using Archive.Logic.Interfaces;
@@ -9,83 +11,80 @@ using Archive.Logic.Services.Interfaces;
 
 namespace Archive.Logic.Services
 {
-    public class DocumentBuilderService : IDocumentBuilderService
+    public class DocumentBuilderService : IDocumentBuilderService<Document>
     {
-        private readonly ICachedCollection<ITextDocument> _cachedDocuments;
+        private readonly IMapperService _mapperService;
+        private readonly ICachedCollection<ReferenceDocument> _cachedDocuments;
         private readonly object _locker;
 
 
         public DocumentBuilderService()
         {
             _locker = new object();
-            _cachedDocuments = new CachedCollection<ITextDocument>();
+            _cachedDocuments = new CachedCollection<ReferenceDocument>();
+            _mapperService = ServiceFactory.GetService<IMapperService>();
         }
 
 
-        public event Action<ITextDocument>? Builded;
+        public event Action<Document>? Builded;
 
 
-        public List<ITextDocument> Build(string filename)
+        public List<Document> Build(string filename)
         {
             ArgumentNullException.ThrowIfNull(filename, nameof(filename));
 
             if (string.IsNullOrWhiteSpace(filename))
-                return new List<ITextDocument>();
+                return new List<Document>();
 
-            IParsingService parser = ServiceFactory.GetService<ParsingService, IParsingService>(filename);
+            IParsingService parser = ServiceFactory.GetService<IParsingService>(filename);
 
             return Build(parser);
         }
 
-        public List<ITextDocument> Build(IParsingService parser)
+        public List<Document> Build(IParsingService parser)
         {
             List<IDocumentInfo> documentInfos = parser.Parse();
-            List<ITextDocument> result = new();
 
-            documentInfos
-                .AsParallel()
+            List<Document> result = documentInfos
                 .Select(x => BuildDocument(x))
-                .ForAll(y =>
-                {
-                    lock (_locker)
-                    {
-                        result.Add(y);
-                        Builded?.Invoke(y);
-                    }
-                });
+                .ToList();
 
             return result;
         }
 
-        private ITextDocument BuildDocument(IDocumentInfo documentInfo)
+        private Document BuildDocument(IDocumentInfo documentInfo)
         {
-            ITextDocument textDocument = Create(documentInfo);
+            Document document = _mapperService.Map<Document, ReferenceDocument>(Create(documentInfo));
 
-            textDocument.RefDocuments = BuildReferenceDocuments(documentInfo.References);
-            
-            return textDocument;
+            document.RefDocuments = BuildReferenceDocuments(documentInfo.References);
+
+            Builded?.Invoke(document);
+
+            return document;
         }
 
-        private List<ITextDocument> BuildReferenceDocuments(List<IDocumentInfo>? documentInfos)
+        private List<ReferenceDocument> BuildReferenceDocuments(List<IDocumentInfo>? documentInfos)
         {
             if (documentInfos is null)
-                return new List<ITextDocument>();
+                return new List<ReferenceDocument>();
 
-            List<ITextDocument> references = new();
+            List<ReferenceDocument> references = new();
 
             foreach (IDocumentInfo documentInfo in documentInfos)
             {
-                ITextDocument? document = _cachedDocuments.Find(documentInfo.RootDocument.Name);
+                ReferenceDocument? document = _cachedDocuments.Find(documentInfo.RootDocument.Name);
 
                 if (document is not null)
                 {
+                    Debug.WriteLine($"Finded document: {document.Number}");
                     references.Add(document);
                     continue;
                 }
 
-                ITextDocument textDocument = Create(documentInfo);
-                references.Add(textDocument);
-                _cachedDocuments.Add(textDocument);
+                ReferenceDocument refDocument = _mapperService.Map<ReferenceDocument, Document>(Create(documentInfo));
+                Debug.WriteLine($"Created document: {refDocument.Number}");
+                references.Add(refDocument);
+                _cachedDocuments.Add(refDocument);
             }
 
             return references;

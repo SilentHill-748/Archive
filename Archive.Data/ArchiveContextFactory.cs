@@ -15,7 +15,7 @@ namespace Archive.Data
             IConfigurationRoot root = builder.AddJsonStream(jsonStream).Build();
 
             DbContextOptionsBuilder<ArchiveContext> optionsBuilder = new();
-            optionsBuilder.UseSqlServer(root.GetConnectionString("MSSQL"));
+            optionsBuilder.UseSqlServer(root.GetConnectionString("MSSQL")).EnableSensitiveDataLogging();
 
             return new ArchiveContext(optionsBuilder.Options);
         }

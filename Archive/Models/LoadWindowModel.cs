@@ -6,7 +6,7 @@ namespace Archive.Models
     {
         private int _loadingDocumentsCount;
         private int _loadedDocumentsCount;
-        private string _rootFolderPath = string.Empty;
+        private string _configurationFilePath = string.Empty;
 
 
         /// <summary>
@@ -36,15 +36,15 @@ namespace Archive.Models
         }
 
         /// <summary>
-        /// Вернёт путь каталогу с документами, которые нужно загрузить.
+        /// Вернёт путь к файлу конфигурации.
         /// </summary>
-        public string SelectedPath
+        public string ConfigurationFilePath
         {
-            get => _rootFolderPath;
+            get => _configurationFilePath;
             set
             {
-                _rootFolderPath = value;
-                OnPropertyChanged(nameof(SelectedPath));
+                _configurationFilePath = value;
+                OnPropertyChanged(nameof(ConfigurationFilePath));
             }
         }
     }

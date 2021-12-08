@@ -22,7 +22,7 @@ namespace Archive.Data
 
         public DbContext DbContext { get; }
 
-        public IRepository<TEntity> Getrepository<TEntity>() where TEntity : class
+        public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
         {
             if (_repositories is null)
                 _repositories = new Dictionary<Type, object>();

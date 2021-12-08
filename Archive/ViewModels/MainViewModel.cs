@@ -1,22 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Archive.Core;
+﻿using Archive.Core;
 using Archive.Models;
+using Archive.Logic.Services.Interfaces;
+using Archive.Data.Entities;
+using Archive.Logic.Services;
+using System.Linq;
 
 namespace Archive.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
         private readonly MainModel _model;
+        private readonly IDbService _databaseService;
+        //private readonly IDocumentBuilderService _documentBuilder;
+        //private readonly ISearchService _searchService;
+        //private readonly IPrintService _printService;
 
 
         public MainViewModel()
         {
             _model = new MainModel();
+
+            _databaseService = ServiceFactory.GetService<IDbService>();
+            //_searchService = ServiceFactory.GetService<ISearchService>();
+            //_printService = ServiceFactory.GetService<IPrintService>();
         }
 
         #region Properties
@@ -28,26 +34,28 @@ namespace Archive.ViewModels
         #region Commands
         public RelayCommand StartSearchCommand
         {
-            get
-            {
-                return new RelayCommand(StartSearch);
-            }
+            get => new(StartSearch);
         }
 
         public RelayCommand SelectDocumentCommand
         {
-            get
-            {
-                return new RelayCommand(SelectCommandToResponceTreeView);
-            }
+            get => new(SelectCommandToResponceTreeView);
         }
 
         public RelayCommand ShowAllTextOfChosenDocumentCommand
         {
-            get
-            {
-                return new RelayCommand(SelectCommandToResponceTreeView);
-            }
+            get => new(SelectCommandToResponceTreeView);
+        }
+
+        public RelayCommand ShowDocumentTextCommand
+        {
+            get => new(ShowDocumentText);
+        }
+
+        private readonly RelayCommand _loadDocuments;
+        public RelayCommand LoadDocumentsCommand
+        {
+            get => _loadDocuments ?? new RelayCommand(LoadAllDocuments);
         }
         #endregion
 
@@ -64,9 +72,17 @@ namespace Archive.ViewModels
         }
 
         // Показывает весь текст документа в окно 'Содержание документа'.
-        private void ShowSummary(object? commandParameter)
+        private void ShowDocumentText(object? commandParameter)
         {
+            // some code
+        }
 
+        private void LoadAllDocuments(object? commandParameter)
+        {
+            MainModel.StoredDocument = _databaseService.UnitOfWork
+                .GetRepository<Document>()
+                .GetAll()
+                .ToList();
         }
     }
 }

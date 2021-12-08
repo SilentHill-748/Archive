@@ -14,8 +14,6 @@ using System.Windows.Shapes;
 
 using Archive.ViewModels;
 using Archive.Core;
-using Archive.Logic.Services;
-using Archive.Logic.Services.Interfaces;
 
 namespace Archive.Views
 {
@@ -35,8 +33,10 @@ namespace Archive.Views
         private void OpenLoadWindowItem_Click(object sender, RoutedEventArgs e)
         {
             LoadWindow loadWindow = new();
+            loadWindow.Owner = this;
 
-            loadWindow.ShowDialog();
+            if (loadWindow.ShowDialog() == true)
+                viewModel.LoadDocumentsCommand.Execute(null);
         }
 
         private void StackPanel_Checked(object sender, RoutedEventArgs e)
@@ -59,6 +59,11 @@ namespace Archive.Views
                 "\n\nИсполнитель: Студент ЛФ ПНИПУ Палин Никита\n\n\t\t© Silent Hill";
             MessageBox.Show(text, "О программе", 
                 MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            viewModel.LoadDocumentsCommand.Execute(null);
         }
     }
 }
