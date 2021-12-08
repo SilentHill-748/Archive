@@ -35,7 +35,7 @@
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
 
-        <Menu Grid.ColumnSpan="7">
+        <Menu Grid.ColumnSpan="7" Background="White" Foreground="Black">
             <MenuItem Header="Документы">
                 <MenuItem Name="OpenLoadWindowItem"
                           Header="Загрузить из каталога"
