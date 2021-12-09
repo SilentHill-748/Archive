@@ -146,7 +146,7 @@
                               Margin="2"
                               ItemsSource="{Binding MainModel.FindedDocuments}">
                         <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate ItemsSource="{Binding ReferenceDocuments}">
+                            <HierarchicalDataTemplate ItemsSource="{Binding RefDocuments}">
                                 <TextBlock Text="{Binding Title}"/>
                                 <HierarchicalDataTemplate.ItemTemplate>
                                     <DataTemplate>
@@ -158,7 +158,7 @@
 
                         <behaviors:Interaction.Triggers>
                             <behaviors:EventTrigger EventName="SelectedItemChanged">
-                                <behaviors:InvokeCommandAction Command="{Binding ShowAllTextOfChosenDocumentCommand}"
+                                <behaviors:InvokeCommandAction Command="{Binding ShowDocumentTextCommand}"
                                                                CommandParameter="{Binding ElementName=ResponseTreeView, Path=SelectedItem}"/>
                             </behaviors:EventTrigger>
                         </behaviors:Interaction.Triggers>
@@ -168,15 +168,15 @@
                 <GroupBox Grid.Row="1"
                           Header="Содержание документа"
                           BorderBrush="Black">
-                    <!--<FlowDocumentScrollViewer Margin="5 10 5 5">
+                    <FlowDocumentScrollViewer Margin="5 10 5 5">
                         <FlowDocument ColumnWidth="{Binding RelativeSource={RelativeSource Self}, Path=PageWidth}"
                                       FontFamily="Times New Roman">
                             <Paragraph TextAlignment="Justify"
                                        Padding="0">
-                                <Run Text="{Binding MainModel.Text}"/>
+                                <Run Text="{Binding MainModel.Text, UpdateSourceTrigger=PropertyChanged}"/>
                             </Paragraph>
                         </FlowDocument>
-                    </FlowDocumentScrollViewer>-->
+                    </FlowDocumentScrollViewer>
                 </GroupBox>
             </Grid>
         </GroupBox>

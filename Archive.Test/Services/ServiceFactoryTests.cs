@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using NUnit.Framework;
 
 using Archive.Logic.Services.Interfaces;
-using Archive.Logic.Interfaces;
 using Archive.Logic.Services;
 using Archive.Logic.Exceptions;
 
-using Archive.Data.Interfaces;
+using Archive.Data.Entities;
 
 namespace Archive.Test.Services
 {
@@ -35,7 +30,7 @@ namespace Archive.Test.Services
         public void Should_Return_IDocumentBuilderService_Test()
         {
             Type expected = typeof(DocumentBuilderService);
-            Type actual = ServiceFactory.GetService<IDocumentBuilderService>().GetType();
+            Type actual = ServiceFactory.GetService<IDocumentBuilderService<Document>>().GetType();
 
             Assert.AreEqual(expected, actual);
         }

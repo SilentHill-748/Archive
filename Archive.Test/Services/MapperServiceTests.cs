@@ -15,7 +15,7 @@ namespace Archive.Test.Services
     public class MapperServiceTests
     {
         private readonly IParsingService _parser;
-        private readonly IDocumentBuilderService _builder;
+        private readonly IDocumentBuilderService<ITextDocument> _builder;
         private readonly IMapperService _mapper;
 
 
@@ -24,7 +24,7 @@ namespace Archive.Test.Services
             string path = @"C:\Users\SilentHill\Desktop\Тестовые файлы\Конфиг.txt";
 
             _parser = ServiceFactory.GetService<IParsingService>(path);
-            _builder = ServiceFactory.GetService<IDocumentBuilderService>();
+            _builder = ServiceFactory.GetService<IDocumentBuilderService<ITextDocument>>();
             _mapper = ServiceFactory.GetService<IMapperService>();
         }
 

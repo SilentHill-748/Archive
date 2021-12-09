@@ -34,31 +34,30 @@ namespace Archive.ViewModels
         public MainModel MainModel => _model;
         #endregion
 
+
         #region Commands
+        private readonly RelayCommand _startCommand;
         public RelayCommand StartSearchCommand
         {
-            get => new(StartSearch, CanStartSearch);
+            get => _startCommand ?? new(StartSearch, CanStartSearch);
         }
 
+        private readonly RelayCommand _selectDocumentCommand;
         public RelayCommand SelectDocumentCommand
         {
-            get => new(SelectCommandToResponceTreeView);
+            get => _selectDocumentCommand ?? new(SelectCommandToResponceTreeView, o => true);
         }
 
-        public RelayCommand ShowAllTextOfChosenDocumentCommand
-        {
-            get => new(SelectCommandToResponceTreeView);
-        }
-
+        private readonly RelayCommand _showDocumentTextCommand;
         public RelayCommand ShowDocumentTextCommand
         {
-            get => new(ShowDocumentText);
+            get => _showDocumentTextCommand ?? new(ShowDocumentText, o => true);
         }
 
         private readonly RelayCommand _loadDocuments;
         public RelayCommand LoadDocumentsCommand
         {
-            get => _loadDocuments ?? new RelayCommand(LoadAllDocuments);
+            get => _loadDocuments ?? new RelayCommand(LoadAllDocuments, o => true);
         }
 
         private readonly RelayCommand _setSearchMode;
@@ -70,10 +69,10 @@ namespace Archive.ViewModels
 
 
         // Запускает алгоритм поиска документов по указанному поисковому запросу.
-        private void StartSearch(object commandParameter)
+        private void StartSearch(object? commandParameter)
         {
             // Тут commandParameter точно не будет null.
-            string searchRequest = commandParameter.ToString()!;
+            string searchRequest = commandParameter?.ToString()!;
 
             MainModel.FindedDocuments.Clear();
 
