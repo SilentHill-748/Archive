@@ -81,12 +81,19 @@
                         </TextBox.ToolTip>
                     </TextBox>
 
-                    <StackPanel Grid.Row="1"
-                                Margin="0 5"
-                                RadioButton.Checked="StackPanel_Checked">
-                        <RadioButton Content="В документе" IsChecked="True"/>
-                        <RadioButton Content="По заголовку"/>
-                        <RadioButton Content="По ключевым словам"/>
+                    <StackPanel Grid.Row="1" Margin="0 5">
+                        <RadioButton Content="В документе" 
+                                     IsChecked="True"
+                                     Command="{Binding SetSearchModeCommand}"
+                                     CommandParameter="{RelativeSource Self}"/>
+                        
+                        <RadioButton Content="По заголовку"
+                                     Command="{Binding SetSearchModeCommand}"
+                                     CommandParameter="{RelativeSource Self}"/>
+                        
+                        <RadioButton Content="По ключевым словам"
+                                     Command="{Binding SetSearchModeCommand}"
+                                     CommandParameter="{RelativeSource Self}"/>
                     </StackPanel>
 
                     <Button Grid.Row="3" 
@@ -135,12 +142,12 @@
                 </Grid.RowDefinitions>
 
                 <GroupBox Header="Древо найденные документов" BorderBrush="Black">
-                    <!--<TreeView x:Name="ResponseTreeView"
+                    <TreeView x:Name="ResponseTreeView"
                               Margin="2"
                               ItemsSource="{Binding MainModel.FindedDocuments}">
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate ItemsSource="{Binding ReferenceDocuments}">
-                                <TextBlock Text="{Binding DocumentTitle}"/>
+                                <TextBlock Text="{Binding Title}"/>
                                 <HierarchicalDataTemplate.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Title}"/>
@@ -155,7 +162,7 @@
                                                                CommandParameter="{Binding ElementName=ResponseTreeView, Path=SelectedItem}"/>
                             </behaviors:EventTrigger>
                         </behaviors:Interaction.Triggers>
-                    </TreeView>-->
+                    </TreeView>
                 </GroupBox>
 
                 <GroupBox Grid.Row="1"

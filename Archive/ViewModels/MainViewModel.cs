@@ -1,9 +1,14 @@
-﻿using Archive.Core;
+﻿using System.Linq;
+using System.Windows.Controls;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+using Archive.Core;
 using Archive.Models;
+using Archive.Logic;
 using Archive.Logic.Services.Interfaces;
-using Archive.Data.Entities;
 using Archive.Logic.Services;
-using System.Linq;
+using Archive.Data.Entities;
 
 namespace Archive.ViewModels
 {
@@ -12,7 +17,6 @@ namespace Archive.ViewModels
         private readonly MainModel _model;
         private readonly IDbService _databaseService;
         //private readonly IDocumentBuilderService _documentBuilder;
-        //private readonly ISearchService _searchService;
         //private readonly IPrintService _printService;
 
 
@@ -21,7 +25,6 @@ namespace Archive.ViewModels
             _model = new MainModel();
 
             _databaseService = ServiceFactory.GetService<IDbService>();
-            //_searchService = ServiceFactory.GetService<ISearchService>();
             //_printService = ServiceFactory.GetService<IPrintService>();
         }
 
@@ -34,7 +37,7 @@ namespace Archive.ViewModels
         #region Commands
         public RelayCommand StartSearchCommand
         {
-            get => new(StartSearch);
+            get => new(StartSearch, CanStartSearch);
         }
 
         public RelayCommand SelectDocumentCommand
@@ -57,32 +60,77 @@ namespace Archive.ViewModels
         {
             get => _loadDocuments ?? new RelayCommand(LoadAllDocuments);
         }
+
+        private readonly RelayCommand _setSearchMode;
+        public RelayCommand SetSearchModeCommand
+        {
+            get => _setSearchMode ?? new RelayCommand(SetSearchMode, o => true);
+        }
         #endregion
 
 
         // Запускает алгоритм поиска документов по указанному поисковому запросу.
-        private void StartSearch(object? commandParameter)
+        private void StartSearch(object commandParameter)
         {
-            // Some code
+            // Тут commandParameter точно не будет null.
+            string searchRequest = commandParameter.ToString()!;
+
+            MainModel.FindedDocuments.Clear();
+
+            ISearchService searchService = ServiceFactory.GetService<ISearchService>(searchRequest);
+            List<Document> findedDocuments = searchService.Search(SearchMode);
+
+            foreach (Document document in findedDocuments)
+                MainModel.FindedDocuments.Add(document);
+        }
+
+        private bool CanStartSearch(object? commandParameter)
+        {
+            return  commandParameter is not null && 
+                    !string.IsNullOrWhiteSpace(commandParameter.ToString());
         }
 
         private void SelectCommandToResponceTreeView(object? commandParameter)
         {
-            // some code
+            if ((commandParameter is not null) && 
+                (commandParameter is Document document))
+            {
+                MainModel.FindedDocuments.Add(document);
+            }
         }
 
         // Показывает весь текст документа в окно 'Содержание документа'.
         private void ShowDocumentText(object? commandParameter)
         {
-            // some code
+            if (commandParameter is not null)
+            {
+                if (commandParameter is Document document)
+                    MainModel.Text = document.Text;
+            }
+        }
+
+        private void SetSearchMode(object? commandParameter)
+        {
+            if ((commandParameter is not null) && 
+                (commandParameter is RadioButton radioButton))
+            {
+                SearchMode = radioButton.Content switch
+                {
+                    "По заголовку" => SearchMode.DocumentTitle,
+                    "По ключевым словам" => SearchMode.KeyWords,
+                    _ => SearchMode.DocumentText
+                };
+            }
         }
 
         private void LoadAllDocuments(object? commandParameter)
         {
-            MainModel.StoredDocument = _databaseService.UnitOfWork
+            List<Document> documents = _databaseService.UnitOfWork
                 .GetRepository<Document>()
                 .GetAll()
                 .ToList();
+
+            MainModel.FindedDocuments = new ObservableCollection<Document>(documents);
         }
     }
 }

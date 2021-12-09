@@ -39,20 +39,6 @@ namespace Archive.Views
                 viewModel.LoadDocumentsCommand.Execute(null);
         }
 
-        private void StackPanel_Checked(object sender, RoutedEventArgs e)
-        {
-            if (sender is RadioButton radioButton)
-            {
-                viewModel.SearchMode = radioButton.Content switch
-                {
-                    "В доументе" => SearchMode.OnDocumentText,
-                    "По заголовку" => SearchMode.OnDocumentTitle,
-                    "По ключевым словам" => SearchMode.ByKeyWords,
-                    _ => throw new Exception("Такого режима поиска не существует!")
-                };
-            }
-        }
-
         private void AboutItem_Click(object sender, RoutedEventArgs e)
         {
             string text = "Данная программа разработа под заказ для [ClentName]." +
