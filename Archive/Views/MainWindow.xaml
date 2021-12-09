@@ -85,15 +85,15 @@
                         <RadioButton Content="В документе" 
                                      IsChecked="True"
                                      Command="{Binding SetSearchModeCommand}"
-                                     CommandParameter="{RelativeSource Self}"/>
+                                     CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
                         
                         <RadioButton Content="По заголовку"
                                      Command="{Binding SetSearchModeCommand}"
-                                     CommandParameter="{RelativeSource Self}"/>
+                                     CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
                         
                         <RadioButton Content="По ключевым словам"
                                      Command="{Binding SetSearchModeCommand}"
-                                     CommandParameter="{RelativeSource Self}"/>
+                                     CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
                     </StackPanel>
 
                     <Button Grid.Row="3" 
