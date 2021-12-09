@@ -54,12 +54,13 @@ namespace Archive.Logic.Services
             for (int i = 0; i < documents.Count; i++)
             {
                 // Замена пробелов с кодом 32 на пробелы с кодом 160. Иначе коды пробелов будут и 32 и 160, а надо общий код.
-                string replaceSpaces = _searchRequest.Replace((char)32, (char)160);
+                string searchRequestWithReplacedSpaces = _searchRequest.Replace((char)32, (char)160);
+                string documentText = documents[i].Text.Replace((char)32, (char)160);
 
-                if (documents[i].Text.Contains(replaceSpaces))
+                if (documentText.Contains(searchRequestWithReplacedSpaces))
                     result.Add(documents[i]);
             }
-            return result;
+            return result.Distinct().ToList();
         }
 
         private List<Document> SearchAtTitle(List<Document> documents)
@@ -71,8 +72,9 @@ namespace Archive.Logic.Services
 
             result = (from document in documents
                       from searchWord in searchWords
-                      where document.Title.ToLower().Equals(searchWord)
+                      where document.Title.ToLower().Contains(searchWord)
                       select document)
+                      .Distinct()
                       .ToList();
 
             return result;
@@ -89,6 +91,7 @@ namespace Archive.Logic.Services
                       from searchWord in keyWords
                       where document.KeyWords.ToLower().Contains(searchWord)
                       select document)
+                      .Distinct()
                       .ToList();
 
             return result;
