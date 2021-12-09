@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
+using Archive.Data.Entities;
 
 namespace Archive.Logic.Services.Interfaces
 {
     public interface ISearchService : IService
     {
-
+        List<Document> Search(SearchMode mode);
     }
 }
