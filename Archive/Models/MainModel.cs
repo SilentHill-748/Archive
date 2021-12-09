@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 
 using Archive.Core;
 using Archive.Data.Entities;
@@ -10,12 +11,16 @@ namespace Archive.Models
         private ObservableCollection<Document> _storedDocuments;
         private ObservableCollection<Document> _findedDocuments;
         private string _chosenDocumentText;
+        private string[] _keyWords;
 
 
         public MainModel()
         {
             _storedDocuments = new ObservableCollection<Document>();
             _findedDocuments = new ObservableCollection<Document>();
+
+            _chosenDocumentText = string.Empty;
+            _keyWords = Array.Empty<string>();
         }
 
 
@@ -45,6 +50,9 @@ namespace Archive.Models
             }
         }
 
+        /// <summary>
+        /// Вернёт весь текст выбранного документа.
+        /// </summary>
         public string Text
         {
             get => _chosenDocumentText;
@@ -52,6 +60,19 @@ namespace Archive.Models
             {
                 _chosenDocumentText = value;
                 OnPropertyChanged(nameof(Text));
+            }
+        }
+
+        /// <summary>
+        /// Вернёт ключевые слова всех докумнетов.
+        /// </summary>
+        public string[] KeyWords
+        {
+            get => _keyWords;
+            set
+            {
+                _keyWords = value;
+                OnPropertyChanged(nameof(KeyWords));
             }
         }
     }

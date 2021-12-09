@@ -66,6 +66,13 @@ namespace Archive.ViewModels
         {
             get => _setSearchMode ?? new RelayCommand(SetSearchMode);
         }
+
+        private readonly RelayCommand _addDocumentToCollectionCommand;
+        public RelayCommand AddDocumentToCollectionCommand
+        {
+            get => _addDocumentToCollectionCommand ??
+                new RelayCommand(AddDocumentTocollection, CanAddDocumentToCollection);
+        }
         #endregion
 
 
@@ -130,6 +137,17 @@ namespace Archive.ViewModels
             List<Document> documents = _databaseService.GetAll();
 
             MainModel.StoredDocument = new ObservableCollection<Document>(documents);
+            MainModel.KeyWords = documents.Select(x => x.KeyWords).ToArray();
+        }
+
+        private void AddDocumentTocollection(object? commandParameter)
+        {
+
+        }
+
+        private bool CanAddDocumentToCollection(object? commandParameter)
+        {
+            return commandParameter is not null && commandParameter is Document;
         }
     }
 }

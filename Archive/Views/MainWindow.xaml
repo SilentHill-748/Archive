@@ -60,6 +60,9 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
@@ -86,11 +89,11 @@
                                      IsChecked="True"
                                      Command="{Binding SetSearchModeCommand}"
                                      CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
-                        
+
                         <RadioButton Content="По заголовку"
                                      Command="{Binding SetSearchModeCommand}"
                                      CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
-                        
+
                         <RadioButton Content="По ключевым словам"
                                      Command="{Binding SetSearchModeCommand}"
                                      CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
@@ -105,10 +108,17 @@
                             CommandParameter="{Binding ElementName=SearchInputField, Path=Text}"/>
                 </Grid>
 
-                <TextBlock Grid.Row="1" Text="Документы:"/>
+                <TextBlock Grid.Row="1" Text="Ключевые слова:"/>
+
+                <ListBox x:Name="KeyWordsField"
+                         Grid.Row="2" 
+                         BorderBrush="Black"
+                         ItemsSource="{Binding MainModel.KeyWords}"/>
+
+                <TextBlock Grid.Row="4" Text="Список документов:"/>
 
                 <ListBox x:Name="ListBoxOfStoredDocuments" 
-                         Grid.Row="2"
+                         Grid.Row="5"
                          BorderBrush="Black"
                          ItemsSource="{Binding MainModel.StoredDocument}"
                          DisplayMemberPath="Title">
@@ -127,7 +137,19 @@
                   BorderBrush="Black"
                   Header="Подборка документов">
             <Grid Margin="5">
-                <ListBox ToolTip="Подборка документов для работы" BorderBrush="Black"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <ToolBar>
+                    
+                </ToolBar>
+
+                <TextBlock Grid.Row="1" Text="Подборка документов:"/>
+                <ListBox Grid.Row="2" 
+                         ToolTip="Подборка документов для работы" 
+                         BorderBrush="Black"/>
             </Grid>
         </GroupBox>
 
@@ -142,27 +164,37 @@
                 </Grid.RowDefinitions>
 
                 <GroupBox Header="Древо найденные документов" BorderBrush="Black">
-                    <TreeView x:Name="ResponseTreeView"
-                              Margin="2"
-                              ItemsSource="{Binding MainModel.FindedDocuments}">
-                        <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate ItemsSource="{Binding RefDocuments}">
-                                <TextBlock Text="{Binding Title}"/>
-                                <HierarchicalDataTemplate.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Title}"/>
-                                    </DataTemplate>
-                                </HierarchicalDataTemplate.ItemTemplate>
-                            </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
+                    <Grid Margin="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
 
-                        <behaviors:Interaction.Triggers>
-                            <behaviors:EventTrigger EventName="SelectedItemChanged">
-                                <behaviors:InvokeCommandAction Command="{Binding ShowDocumentTextCommand}"
-                                                               CommandParameter="{Binding ElementName=ResponseTreeView, Path=SelectedItem}"/>
-                            </behaviors:EventTrigger>
-                        </behaviors:Interaction.Triggers>
-                    </TreeView>
+                        <ToolBar>
+                        </ToolBar>
+
+                        <TreeView x:Name="ResponseTreeView"
+                                  Grid.Row="1"
+                                  ItemsSource="{Binding MainModel.FindedDocuments}">
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate ItemsSource="{Binding RefDocuments}">
+                                    <TextBlock Text="{Binding Title}"/>
+                                    <HierarchicalDataTemplate.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Title}"/>
+                                        </DataTemplate>
+                                    </HierarchicalDataTemplate.ItemTemplate>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+
+                            <behaviors:Interaction.Triggers>
+                                <behaviors:EventTrigger EventName="SelectedItemChanged">
+                                    <behaviors:InvokeCommandAction Command="{Binding ShowDocumentTextCommand}"
+                                                                   CommandParameter="{Binding ElementName=ResponseTreeView, Path=SelectedItem}"/>
+                                </behaviors:EventTrigger>
+                            </behaviors:Interaction.Triggers>
+                        </TreeView>
+                    </Grid>
                 </GroupBox>
 
                 <GroupBox Grid.Row="1"
