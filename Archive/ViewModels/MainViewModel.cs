@@ -9,6 +9,7 @@ using Archive.Logic;
 using Archive.Logic.Services.Interfaces;
 using Archive.Logic.Services;
 using Archive.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Archive.ViewModels
 {
@@ -105,6 +106,8 @@ namespace Archive.ViewModels
             {
                 if (commandParameter is Document document)
                     MainModel.Text = document.Text;
+                if (commandParameter is ReferenceDocument refDocument)
+                    MainModel.Text = refDocument.Text;
             }
         }
 
@@ -124,10 +127,7 @@ namespace Archive.ViewModels
 
         private void LoadAllDocuments(object? commandParameter)
         {
-            List<Document> documents = _databaseService.UnitOfWork
-                .GetRepository<Document>()
-                .GetAll()
-                .ToList();
+            List<Document> documents = _databaseService.GetAll();
 
             MainModel.StoredDocument = new ObservableCollection<Document>(documents);
         }

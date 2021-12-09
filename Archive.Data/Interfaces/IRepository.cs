@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Archive.Data.Interfaces
 {
@@ -25,6 +29,6 @@ namespace Archive.Data.Interfaces
         /// Возвращает все объекты сущности.
         /// </summary>
         /// <returns>Коллекция <see cref="IEnumerable{T}"/> объектов <typeparamref name="TEntity"/>.</returns>
-        IEnumerable<TEntity> GetAll();
+        IEnumerable<TEntity> GetAll(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null);
     }
 }

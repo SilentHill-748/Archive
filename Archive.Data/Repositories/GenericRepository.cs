@@ -3,22 +3,20 @@
 using Microsoft.EntityFrameworkCore;
 
 using Archive.Data.Interfaces;
+using Microsoft.EntityFrameworkCore.Query;
+using System;
 using System.Linq;
-using Archive.Data.Entities;
-using System.Diagnostics;
 
 namespace Archive.Data.Repositories
 {
     public class GenericRepository<TEntity> : IRepository<TEntity>
         where TEntity: class
     {
-        private readonly DbContext _context;
         private readonly DbSet<TEntity> _dbSet;
 
 
         public GenericRepository(DbContext context)
         {
-            _context = context;
             _dbSet = context.Set<TEntity>();
         }
 
@@ -28,8 +26,10 @@ namespace Archive.Data.Repositories
             _dbSet.AddRange(entities);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public IEnumerable<TEntity> GetAll(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
+            if (include is not null)
+                return include(_dbSet);
             return _dbSet;
         }
 
