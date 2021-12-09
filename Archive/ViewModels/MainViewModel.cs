@@ -130,7 +130,7 @@ namespace Archive.ViewModels
                 .GetAll()
                 .ToList();
 
-            MainModel.FindedDocuments = new ObservableCollection<Document>(documents);
+            MainModel.StoredDocument = new ObservableCollection<Document>(documents);
         }
     }
 }
