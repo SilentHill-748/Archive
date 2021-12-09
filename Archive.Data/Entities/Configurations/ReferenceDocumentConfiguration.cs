@@ -11,6 +11,7 @@ namespace Archive.Data.Entities.Configurations
             builder.Property(d => d.Number).HasColumnName("RefNumber");
             builder.Property(d => d.Number).ValueGeneratedNever();
             builder.Property(d => d.Title).IsRequired();
+            builder.Property(d => d.Text).IsRequired();
             builder.Property(d => d.Path).IsRequired();
         }
     }
