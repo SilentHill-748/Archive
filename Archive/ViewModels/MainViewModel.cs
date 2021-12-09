@@ -45,25 +45,25 @@ namespace Archive.ViewModels
         private readonly RelayCommand _selectDocumentCommand;
         public RelayCommand SelectDocumentCommand
         {
-            get => _selectDocumentCommand ?? new(SelectCommandToResponceTreeView, o => true);
+            get => _selectDocumentCommand ?? new(SelectCommandToResponceTreeView);
         }
 
         private readonly RelayCommand _showDocumentTextCommand;
         public RelayCommand ShowDocumentTextCommand
         {
-            get => _showDocumentTextCommand ?? new(ShowDocumentText, o => true);
+            get => _showDocumentTextCommand ?? new(ShowDocumentText);
         }
 
         private readonly RelayCommand _loadDocuments;
         public RelayCommand LoadDocumentsCommand
         {
-            get => _loadDocuments ?? new RelayCommand(LoadAllDocuments, o => true);
+            get => _loadDocuments ?? new RelayCommand(LoadAllDocuments);
         }
 
         private readonly RelayCommand _setSearchMode;
         public RelayCommand SetSearchModeCommand
         {
-            get => _setSearchMode ?? new RelayCommand(SetSearchMode, o => true);
+            get => _setSearchMode ?? new RelayCommand(SetSearchMode);
         }
         #endregion
 
