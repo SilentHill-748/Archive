@@ -9,6 +9,9 @@ namespace Archive.Data
         public ArchiveContext(DbContextOptions<ArchiveContext> options)
             : base(options)
         {
+#if DEBUG
+            Database.EnsureDeleted();
+#endif
             Database.EnsureCreated();
         }
 
