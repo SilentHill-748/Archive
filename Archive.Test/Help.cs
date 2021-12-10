@@ -38,26 +38,26 @@ namespace Archive.Test
             return result;
         }
 
-        /// <summary>
-        /// Вернет список ожидаемых объектов, которые должны быть получены в тесте маппинга.
-        /// </summary>
-        /// <returns>Список документов - корректных данных для сравнения.</returns>
-        internal static List<Document> GetExpectedMappedDocuments()
-        {
-            string xmlResourcePath = "Archive.Test.TestModels.ExpectedMappedData.xml";
+        ///// <summary>
+        ///// Вернет список ожидаемых объектов, которые должны быть получены в тесте маппинга.
+        ///// </summary>
+        ///// <returns>Список документов - корректных данных для сравнения.</returns>
+        //internal static List<Document> GetExpectedMappedDocuments()
+        //{
+        //    string xmlResourcePath = "Archive.Test.TestModels.ExpectedMappedData.xml";
 
-            Stream xmlStream = GetXmlFileStream(xmlResourcePath);
+        //    Stream xmlStream = GetXmlFileStream(xmlResourcePath);
 
-            XmlSerializer serializer = new(typeof(DocumentCollection));
+        //    XmlSerializer serializer = new(typeof(DocumentCollection));
 
-            DocumentCollection documentCollection = (DocumentCollection?)serializer.Deserialize(xmlStream) ?? 
-                throw new Exception("Не получается десериализовать xml файл!");
+        //    DocumentCollection documentCollection = (DocumentCollection?)serializer.Deserialize(xmlStream) ?? 
+        //        throw new Exception("Не получается десериализовать xml файл!");
 
-            foreach (Document document in documentCollection.Documents)
-                document.References = document.ReferenceCollection.References;
+        //    foreach (Document document in documentCollection.Documents)
+        //        document.References = document.ReferenceCollection.References;
 
-            return documentCollection.Documents;
-        }
+        //    return documentCollection.Documents;
+        //}
 
         private static Stream GetXmlFileStream(string resourcePath)
         {

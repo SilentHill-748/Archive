@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Archive.Data.Entities
 {
@@ -13,5 +14,24 @@ namespace Archive.Data.Entities
         public string Text { get; set; } = string.Empty;
 
         public List<Document> Documents { get; set; } = new();
+
+
+        public override bool Equals(object? obj)
+        {
+            if ((obj is not null) &&
+                (obj is ReferenceDocument another))
+            {
+                return  this.Number == another.Number &&
+                        this.Title.Equals(another.Title) &&
+                        this.Path.Equals(another.Path);
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Number, Title, Path);
+        }
     }
 }

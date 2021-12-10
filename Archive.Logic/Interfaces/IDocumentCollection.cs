@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Archive.Logic.Interfaces
@@ -7,7 +8,7 @@ namespace Archive.Logic.Interfaces
     /// Предоставляет операции для работы над коллекцией документов <typeparamref name="TDocument"/> типа.
     /// </summary>
     /// <typeparam name="TDocument">Тип документов.</typeparam>
-    public interface IDocumentCollection<TDocument>
+    public interface IDocumentCollection<TDocument> : IDisposable, IEnumerable<TDocument>
     {
         ObservableCollection<TDocument> Documents { get; }
 

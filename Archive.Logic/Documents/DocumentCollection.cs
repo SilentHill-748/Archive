@@ -11,6 +11,7 @@ using Archive.Logic.Services;
 using Archive.Logic.Services.Interfaces;
 using Archive.Logic.Interfaces;
 using Archive.Data.Entities;
+using System.Collections;
 
 namespace Archive.Logic.Documents
 {
@@ -18,11 +19,13 @@ namespace Archive.Logic.Documents
     public class DocumentCollection : IDocumentCollection<Document>
     {
         private ObservableCollection<Document> _documentCollection;
-
+        private IPrintService _printService;
+        private bool disposedValue;
 
         public DocumentCollection()
         {
             _documentCollection = new ObservableCollection<Document>();
+            _printService = ServiceFactory.GetService<IPrintService>();
         }
 
 
@@ -93,7 +96,7 @@ namespace Archive.Logic.Documents
             {
                 if (document.Number == Documents[i].Number)
                 {
-                    DocumentSwap(Documents[i], Documents[i + 1]);
+                    (Documents[i], Documents[i + 1]) = (Documents[i + 1], Documents[i]);
                     break;
                 }
             }
@@ -107,7 +110,7 @@ namespace Archive.Logic.Documents
             {
                 if (document.Number == Documents[i].Number)
                 {
-                    DocumentSwap(Documents[i], Documents[i - 1]);
+                    (Documents[i], Documents[i - 1]) = (Documents[i - 1], Documents[i]);
                     break;
                 }
             }
@@ -130,14 +133,12 @@ namespace Archive.Logic.Documents
         {
             ArgumentNullException.ThrowIfNull(document, nameof(document));
 
-            IPrintService printService = ServiceFactory.GetService<IPrintService>();
-            printService.PrintDocument(document);
+            _printService.PrintDocument(document);
         }
 
         public void PrintDocuments()
         {
-            IPrintService printService = ServiceFactory.GetService<IPrintService>();
-            printService.PrintDocuments(Documents);
+            _printService.PrintDocuments(Documents);
         }
 
         public bool Remove(Document document)
@@ -160,11 +161,34 @@ namespace Archive.Logic.Documents
             return false;
         }
 
-        private void DocumentSwap(Document left, Document right)
+        public void Dispose()
         {
-            Document temp = left;
-            left = right;
-            right = temp;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public IEnumerator<Document> GetEnumerator()
+        {
+            return Documents.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    
+                }
+
+                _printService.Dispose();
+                disposedValue = true;
+            }
         }
     }
 }

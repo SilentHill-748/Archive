@@ -67,7 +67,7 @@ namespace Archive.Logic.Services
             for (int i = 0; i < arguments.Length; i++)
             {
                 var references = arguments[i]
-                    .Split(',')
+                    .Split(new char[] { ',', ' '}, StringSplitOptions.RemoveEmptyEntries)
                     .Where(x => File.Exists(rootDir + "\\" + x));
 
                 if (File.Exists(rootDir + "\\" + arguments[i])) // Если это одиночный файл, то это 1 аргумент (главный док)
@@ -79,7 +79,7 @@ namespace Archive.Logic.Services
                     arguments[i] = string.Join(",", references.Select(filename => rootDir + "\\" + filename));
                 }
                 else // Иначе, если это точно не файл/файлы, то это ключевые слова.
-                    arguments[i] = arguments[i].ToLower().Replace(" ", "");
+                    arguments[i] = arguments[i].ToLower();
             }
 
             return arguments;

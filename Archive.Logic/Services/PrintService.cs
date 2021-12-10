@@ -22,7 +22,7 @@ namespace Archive.Logic.Services
 
         public void PrintDocument(Document document)
         {
-            Word.Document printDocument = _wordApplication.Documents.Open(document);
+            Word.Document printDocument = _wordApplication.Documents.Open(document.Path);
             printDocument.PrintOut();
             printDocument.Close();
         }
@@ -45,7 +45,6 @@ namespace Archive.Logic.Services
             {
                 if (disposing)
                 {
-                    _wordApplication.Documents.Close();
                     _wordApplication.Quit();
                 }
 

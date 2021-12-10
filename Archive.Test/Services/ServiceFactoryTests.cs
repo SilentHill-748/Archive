@@ -19,13 +19,6 @@ namespace Archive.Test.Services
                 ServiceFactory.GetService<ISearchService>());
         } 
 
-        //[Test]
-        //public void Should_Throw_CannotCreateInstanceException_Test()
-        //{
-        //    Assert.Throws<CannotCreateInstanceException>(() =>
-        //        ServiceFactory.GetService<ITest>());
-        //}
-
         [Test]
         public void Should_Return_IDocumentBuilderService_Test()
         {
