@@ -9,7 +9,6 @@ using Archive.Logic;
 using Archive.Logic.Services.Interfaces;
 using Archive.Logic.Services;
 using Archive.Data.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace Archive.ViewModels
 {

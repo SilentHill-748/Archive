@@ -138,12 +138,51 @@
                   Header="Подборка документов">
             <Grid Margin="5">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="25"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <ToolBar>
-                    
+                <ToolBar Background="White" HorizontalAlignment="Left">
+                    <Button x:Name="SaveCollectionButton" 
+                            Content="S" 
+                            Padding="0">
+                        
+                    </Button>
+                    <Button x:Name="LoadCollectionButton"
+                            Content="L"
+                            Padding="0">
+                        
+                    </Button>
+
+                    <Button x:Name="ExportCollectionButton"
+                            Content="Ex"
+                            Padding="0">
+                        
+                    </Button>
+
+                    <Button x:Name="MoveUpButton"
+                            Content="Up"
+                            Padding="0">
+                        
+                    </Button>
+
+                    <Button x:Name="MoveDownButton"
+                            Content="Down"
+                            Padding="0">
+                        
+                    </Button>
+
+                    <Button x:Name="PrintCollectionButton"
+                            Content="Print"
+                            Padding="0">
+                        
+                    </Button>
+
+                    <Button x:Name="RemoveDocumentButton"
+                            Content="-"
+                            Padding="0">
+                        
+                    </Button>
                 </ToolBar>
 
                 <TextBlock Grid.Row="1" Text="Подборка документов:"/>
@@ -166,11 +205,16 @@
                 <GroupBox Header="Древо найденные документов" BorderBrush="Black">
                     <Grid Margin="2">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="25"/>
                             <RowDefinition Height="1*"/>
                         </Grid.RowDefinitions>
 
-                        <ToolBar>
+                        <ToolBar Background="White" HorizontalAlignment="Left">
+                            <Button x:Name="AddToCollectionButton"
+                                    Content="+"
+                                    Padding="0">
+                                
+                            </Button>
                         </ToolBar>
 
                         <TreeView x:Name="ResponseTreeView"
@@ -191,6 +235,9 @@
                                 <behaviors:EventTrigger EventName="SelectedItemChanged">
                                     <behaviors:InvokeCommandAction Command="{Binding ShowDocumentTextCommand}"
                                                                    CommandParameter="{Binding ElementName=ResponseTreeView, Path=SelectedItem}"/>
+                                </behaviors:EventTrigger>
+                                <behaviors:EventTrigger EventName="MouseDoubleClick">
+                                    
                                 </behaviors:EventTrigger>
                             </behaviors:Interaction.Triggers>
                         </TreeView>
