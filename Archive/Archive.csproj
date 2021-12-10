@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Archive.Logic\Archive.Logic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Assets\" />
+  </ItemGroup>
+
 </Project>
