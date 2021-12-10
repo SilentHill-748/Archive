@@ -28,8 +28,4 @@
     <ProjectReference Include="..\Archive.Data\Archive.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="SerializeModels\" />
-  </ItemGroup>
-
 </Project>

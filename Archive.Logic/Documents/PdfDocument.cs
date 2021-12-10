@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Archive.Logic.Interfaces;
 
@@ -37,7 +38,7 @@ namespace Archive.Logic.Documents
             }
         }
         public string Title => _documentInfo.RootDocument.Name;
-        public string Text => _pdfDocument.GetText();
+        public string Text => GetText();
         public string Path => _documentInfo.RootDocument.FullName;
         public string? KeyWords => _documentInfo.KeyWords;
         public List<ITextDocument>? RefDocuments { get; set; }
@@ -53,13 +54,26 @@ namespace Archive.Logic.Documents
         {
             if (!disposedValue)
             {
-                if (disposing)
-                {
-                    _pdfDocument.Dispose();
-                }
-
+                _pdfDocument.Dispose();
                 disposedValue = true;
             }
+        }
+
+        private string GetText()
+        {
+            Pdf.PdfPage page = _pdfDocument.Pages[0];
+
+            if (page.GetImages().Any())
+                return GetTextFromImageOnFirstPage(page.GetImages().First());
+
+            return _pdfDocument.GetText();
+        }
+
+        // Получить текст из первого скана на первой странице с применением Tesseract.
+        private string GetTextFromImageOnFirstPage(Pdf.PdfImage image)
+        {
+            // Заглушка
+            return string.Empty;
         }
     }
 }
