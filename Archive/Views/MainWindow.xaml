@@ -10,9 +10,9 @@
         WindowStartupLocation="CenterScreen"
         Title="Главное окно программы" 
         MinHeight="620"
-        MinWidth="960"
+        MinWidth="1015"
         Height="620"
-        Width="960"
+        Width="1015"
         ResizeMode="CanResizeWithGrip"
         FontSize="14"
         Loaded="Window_Loaded"
@@ -27,11 +27,11 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="280"/>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition MinWidth="400"/>
             <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="280"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
 
@@ -145,7 +145,7 @@
 
             <Grid Margin="5">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
@@ -153,63 +153,68 @@
                 <ToolBar x:Name="DocumentCollectionToolBar" 
                          Background="White" 
                          HorizontalAlignment="Left">
-
-                    <Button x:Name="SaveCollectionButton" 
-                            Content="S" 
+                    <Button x:Name="MoveDownButton"
                             Padding="0"
+                            Margin="0 0 2 0"
+                            ToolTip="Опустить на 1 вниз."
+                            Command="{Binding MoveDownCommand}"
+                            CommandParameter="{Binding ElementName=DocumentCollectionView, Path=SelectedItem}">
+                        <Image Source="/Assets/moveDown.png"/>
+                    </Button>
+                    <Button x:Name="MoveUpButton"
+                            Padding="0"
+                            Margin="0 0 2 0"
+                            ToolTip="Поднять на 1 вверх."
+                            Command="{Binding MoveUpCommand}"
+                            CommandParameter="{Binding ElementName=DocumentCollectionView, Path=SelectedItem}">
+                        <Image Source="/Assets/moveUp.png"/>
+                    </Button>
+                    <Button x:Name="SaveCollectionButton" 
+                            Padding="0"
+                            Margin="0 0 2 0"
+                            ToolTip="Сохранить."
                             Command="{Binding SaveCommand}">
-                        
+                        <Image Source="/Assets/save.png"/>
                     </Button>
                     <Button x:Name="LoadCollectionButton"
-                            Content="L"
                             Padding="0"
+                            Margin="0 0 2 0"
+                            ToolTip="Загрузить."
                             Command="{Binding LoadCommand}">
-                        
+                        <Image Source="/Assets/load.png"/>
                     </Button>
 
                     <Button x:Name="ExportCollectionButton"
-                            Content="Ex"
                             Padding="0"
+                            Margin="0 0 2 0"
+                            ToolTip="Экспорт."
                             Command="{Binding ExportCommand}">
-                        
-                    </Button>
-
-                    <Button x:Name="MoveUpButton"
-                            Content="Up"
-                            Padding="0"
-                            Command="{Binding MoveUpCommand}"
-                            CommandParameter="{Binding ElementName=DocumentCollectionView, Path=SelectedItem}">
-                        
-                    </Button>
-
-                    <Button x:Name="MoveDownButton"
-                            Content="Down"
-                            Padding="0"
-                            Command="{Binding MoveDownCommand}"
-                            CommandParameter="{Binding ElementName=DocumentCollectionView, Path=SelectedItem}">
-                        
+                        <Image Source="/Assets/export.png"/>
                     </Button>
 
                     <Button x:Name="PrintCollectionButton"
-                            Content="Print"
                             Padding="0"
+                            Margin="0 0 2 0"
+                            ToolTip="Печатать всё."
                             Command="{Binding PrintAllCommand}">
-                        
+                        <Image Source="/Assets/print.png"/>
                     </Button>
 
                     <Button x:Name="RemoveDocumentButton"
-                            Content="-"
                             Padding="0"
+                            Margin="0 0 2 0"
+                            ToolTip="Удалить выбранный документ."
                             Command="{Binding RemoveDocumentCommand}"
                             CommandParameter="{Binding ElementName=DocumentCollectionView, Path=SelectedItem}">
-                        
+                        <Image Source="/Assets/deleteDocument.png"/>
                     </Button>
 
-                    <Button x:Name="removeAllDocumentsButton"
-                            Content="X"
+                    <Button x:Name="RemoveAllDocumentsButton"
                             Padding="0"
+                            Margin="0 0 2 0"
+                            ToolTip="Удалить все документы."
                             Command="{Binding RemoveAllDocumentsCommand}">
-                        
+                        <Image Source="/Assets/deleteAll.png"/>
                     </Button>
                 </ToolBar>
 
@@ -237,21 +242,17 @@
                 <GroupBox Header="Древо найденные документов" BorderBrush="Black">
                     <Grid Margin="2">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="30"/>
                             <RowDefinition Height="1*"/>
                         </Grid.RowDefinitions>
 
                         <ToolBar Background="White" HorizontalAlignment="Left">
-                            <Button x:Name="AddToCollectionButton"
-                                    Content="+"
-                                    Padding="0">
-                                
+                            <Button x:Name="AddToCollectionButton" Margin="0 0 4 0" Padding="0" ToolTip="Добавить документ.">
+                                <Image Source="/Assets/add.png"/>
                             </Button>
 
-                            <Button x:Name="ClearTreeButton"
-                                    Content="X"
-                                    Padding="2 0">
-                                
+                            <Button x:Name="ClearTreeButton" Padding="0" ToolTip="Очистить список.">
+                                <Image Source="/Assets/deleteAll.png"/>
                             </Button>
                         </ToolBar>
 

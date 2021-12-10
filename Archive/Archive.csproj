@@ -18,7 +18,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\" />
+    <Resource Include="Assets\add.png" />
+    <Resource Include="Assets\deleteAll.png" />
+    <Resource Include="Assets\deleteDocument.png" />
+    <Resource Include="Assets\document.png" />
+    <Resource Include="Assets\export.png" />
+    <Resource Include="Assets\load.png" />
+    <Resource Include="Assets\moveDown.png" />
+    <Resource Include="Assets\moveUp.png" />
+    <Resource Include="Assets\print.png" />
+    <Resource Include="Assets\save.png" />
   </ItemGroup>
 
 </Project>
