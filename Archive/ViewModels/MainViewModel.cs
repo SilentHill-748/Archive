@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Windows.Controls;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 using Archive.Core;
 using Archive.Models;
@@ -16,8 +15,6 @@ namespace Archive.ViewModels
     {
         private readonly MainModel _model;
         private readonly IDbService _databaseService;
-        //private readonly IDocumentBuilderService _documentBuilder;
-        //private readonly IPrintService _printService;
 
 
         public MainViewModel()
@@ -25,7 +22,13 @@ namespace Archive.ViewModels
             _model = new MainModel();
 
             _databaseService = ServiceFactory.GetService<IDbService>();
-            //_printService = ServiceFactory.GetService<IPrintService>();
+            _startCommand = new RelayCommand(StartSearch, CanStartSearch);
+            _selectDocumentCommand = new RelayCommand(SelectCommandToResponceTreeView);
+            _showDocumentTextCommand = new RelayCommand(ShowDocumentText);
+            _loadDocuments = new RelayCommand(LoadAllDocuments);
+            _setSearchMode = new RelayCommand(SetSearchMode);
+            _addDocumentToCollectionCommand = new RelayCommand(AddDocumentToСollection, CanAddDocumentToCollection);
+            _exitCommand = new RelayCommand(Exit);
         }
 
         #region Properties
@@ -39,38 +42,43 @@ namespace Archive.ViewModels
         private readonly RelayCommand _startCommand;
         public RelayCommand StartSearchCommand
         {
-            get => _startCommand ?? new(StartSearch, CanStartSearch);
+            get => _startCommand;
         }
 
         private readonly RelayCommand _selectDocumentCommand;
         public RelayCommand SelectDocumentCommand
         {
-            get => _selectDocumentCommand ?? new(SelectCommandToResponceTreeView);
+            get => _selectDocumentCommand;
         }
 
         private readonly RelayCommand _showDocumentTextCommand;
         public RelayCommand ShowDocumentTextCommand
         {
-            get => _showDocumentTextCommand ?? new(ShowDocumentText);
+            get => _showDocumentTextCommand;
         }
 
         private readonly RelayCommand _loadDocuments;
         public RelayCommand LoadDocumentsCommand
         {
-            get => _loadDocuments ?? new RelayCommand(LoadAllDocuments);
+            get => _loadDocuments;
         }
 
         private readonly RelayCommand _setSearchMode;
         public RelayCommand SetSearchModeCommand
         {
-            get => _setSearchMode ?? new RelayCommand(SetSearchMode);
+            get => _setSearchMode;
         }
 
         private readonly RelayCommand _addDocumentToCollectionCommand;
         public RelayCommand AddDocumentToCollectionCommand
         {
-            get => _addDocumentToCollectionCommand ??
-                new RelayCommand(AddDocumentTocollection, CanAddDocumentToCollection);
+            get => _addDocumentToCollectionCommand;
+        }
+
+        private readonly RelayCommand _exitCommand;
+        public RelayCommand ExitCommand
+        {
+            get => _exitCommand;
         }
         #endregion
 
@@ -135,18 +143,32 @@ namespace Archive.ViewModels
         {
             List<Document> documents = _databaseService.GetAll();
 
-            MainModel.StoredDocument = new ObservableCollection<Document>(documents);
+            MainModel.StoredDocument.Clear();
+
+            foreach (Document document in documents)
+                MainModel.StoredDocument.Add(document);
+
             MainModel.KeyWords = documents.Select(x => x.KeyWords).ToArray();
         }
 
-        private void AddDocumentTocollection(object? commandParameter)
+        private void AddDocumentToСollection(object? commandParameter)
         {
-
+            //параметр не null! Это проверяется в методе CanAddDocumentToCollection.
+            Document document = (Document)commandParameter!;
+            MainModel.DocumentCollection.Add(document);
         }
 
         private bool CanAddDocumentToCollection(object? commandParameter)
         {
             return commandParameter is not null && commandParameter is Document;
+        }
+
+        // Метод для высвобождения загруженных ресурсов.
+        private void Exit(object? commandParameter)
+        {
+            MainModel.DocumentCollection.Dispose();
+            MainModel.FindedDocuments.Clear();
+            MainModel.StoredDocument.Clear();
         }
     }
 }

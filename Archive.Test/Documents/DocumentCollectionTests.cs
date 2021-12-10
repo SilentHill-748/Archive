@@ -83,7 +83,7 @@ namespace Archive.Test.Documents
         [Test]
         public void ShouldSaveDocumentCollectionToXmlFileTest()
         {
-            string savedXmlFilePath = "F:\\SavedTestCollection.xml";
+            string savedXmlFilePath = "F:\\SavedTestCollection2.xml";
             using DocumentCollection expected = GetCollection();
 
             expected.SaveCollection(savedXmlFilePath);

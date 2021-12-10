@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using Archive.ViewModels;
-using Archive.Core;
 
 namespace Archive.Views
 {
@@ -27,7 +26,11 @@ namespace Archive.Views
             InitializeComponent();
             
             viewModel = new();
+
+            var documentCollectionVM = new DocumentCollectionViewModel(viewModel.MainModel);
+
             DataContext = viewModel;
+            DocumentCollectionToolBar.DataContext = documentCollectionVM;
         }
 
         private void OpenLoadWindowItem_Click(object sender, RoutedEventArgs e)

@@ -17,13 +17,12 @@ namespace Archive.Logic.Documents
     public class DocumentCollection : IDocumentCollection<Document>
     {
         private ObservableCollection<Document> _documentCollection;
-        private IPrintService _printService;
+        private IPrintService? _printService;
         private bool disposedValue;
 
         public DocumentCollection()
         {
             _documentCollection = new ObservableCollection<Document>();
-            _printService = ServiceFactory.GetService<IPrintService>();
         }
 
 
@@ -38,7 +37,17 @@ namespace Archive.Logic.Documents
         {
             ArgumentNullException.ThrowIfNull(document, nameof(document));
 
-            Documents.Add(document);
+            if (!Documents.Contains(document))
+            {
+                document.Text = "";
+
+                foreach (ReferenceDocument refDocument in document.RefDocuments)
+                {
+                    refDocument.Text = "";
+                    refDocument.Documents = new();
+                }
+                Documents.Add(document);
+            }    
         }
 
         public void Clear()
@@ -72,8 +81,10 @@ namespace Archive.Logic.Documents
 
             DocumentCollection? collection = (DocumentCollection?)serializer.Deserialize(fileStream);
 
-            if (collection is not null)
-                this._documentCollection = collection.Documents;
+            if (collection is null)
+                throw new Exception("Не удалось загрузить коллекцию!");
+
+            this._documentCollection = new (collection.Documents);
         }
 
         public void SaveCollection(string filename)
@@ -131,11 +142,17 @@ namespace Archive.Logic.Documents
         {
             ArgumentNullException.ThrowIfNull(document, nameof(document));
 
+            if (_printService is null)
+                _printService = ServiceFactory.GetService<IPrintService>();
+
             _printService.PrintDocument(document);
         }
 
         public void PrintDocuments()
         {
+            if (_printService is null)
+                _printService = ServiceFactory.GetService<IPrintService>();
+
             _printService.PrintDocuments(Documents);
         }
 
@@ -179,12 +196,7 @@ namespace Archive.Logic.Documents
         {
             if (!disposedValue)
             {
-                if (disposing)
-                {
-                    
-                }
-
-                _printService.Dispose();
+                _printService?.Dispose();
                 disposedValue = true;
             }
         }

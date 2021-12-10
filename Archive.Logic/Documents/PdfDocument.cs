@@ -7,7 +7,6 @@ using Pdf = BitMiracle.Docotic.Pdf;
 
 namespace Archive.Logic.Documents
 {
-    //TODO: Добавить библиотеку работы с PDF.
     public sealed class PdfDocument : ITextDocument
     {
         private readonly IDocumentInfo _documentInfo;

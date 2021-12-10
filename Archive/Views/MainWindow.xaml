@@ -17,6 +17,12 @@
         FontSize="14"
         Loaded="Window_Loaded"
         d:DataContext="{d:DesignInstance VM:MainViewModel}">
+    
+    <behaviors:Interaction.Triggers>
+        <behaviors:EventTrigger EventName="Closing">
+            <behaviors:InvokeCommandAction Command="{Binding ExitCommand}"/>
+        </behaviors:EventTrigger>
+    </behaviors:Interaction.Triggers>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -136,59 +142,85 @@
                   Grid.Row="1"
                   BorderBrush="Black"
                   Header="Подборка документов">
+
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25"/>
                     <RowDefinition Height="20"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <ToolBar Background="White" HorizontalAlignment="Left">
+
+                <ToolBar x:Name="DocumentCollectionToolBar" 
+                         Background="White" 
+                         HorizontalAlignment="Left">
+
                     <Button x:Name="SaveCollectionButton" 
                             Content="S" 
-                            Padding="0">
+                            Padding="0"
+                            Command="{Binding SaveCommand}">
                         
                     </Button>
                     <Button x:Name="LoadCollectionButton"
                             Content="L"
-                            Padding="0">
+                            Padding="0"
+                            Command="{Binding LoadCommand}">
                         
                     </Button>
 
                     <Button x:Name="ExportCollectionButton"
                             Content="Ex"
-                            Padding="0">
+                            Padding="0"
+                            Command="{Binding ExportCommand}">
                         
                     </Button>
 
                     <Button x:Name="MoveUpButton"
                             Content="Up"
-                            Padding="0">
+                            Padding="0"
+                            Command="{Binding MoveUpCommand}"
+                            CommandParameter="{Binding ElementName=DocumentCollectionView, Path=SelectedItem}">
                         
                     </Button>
 
                     <Button x:Name="MoveDownButton"
                             Content="Down"
-                            Padding="0">
+                            Padding="0"
+                            Command="{Binding MoveDownCommand}"
+                            CommandParameter="{Binding ElementName=DocumentCollectionView, Path=SelectedItem}">
                         
                     </Button>
 
                     <Button x:Name="PrintCollectionButton"
                             Content="Print"
-                            Padding="0">
+                            Padding="0"
+                            Command="{Binding PrintAllCommand}">
                         
                     </Button>
 
                     <Button x:Name="RemoveDocumentButton"
                             Content="-"
-                            Padding="0">
+                            Padding="0"
+                            Command="{Binding RemoveDocumentCommand}"
+                            CommandParameter="{Binding ElementName=DocumentCollectionView, Path=SelectedItem}">
+                        
+                    </Button>
+
+                    <Button x:Name="removeAllDocumentsButton"
+                            Content="X"
+                            Padding="0"
+                            Command="{Binding RemoveAllDocumentsCommand}">
                         
                     </Button>
                 </ToolBar>
 
                 <TextBlock Grid.Row="1" Text="Подборка документов:"/>
+                
                 <ListBox Grid.Row="2" 
+                         x:Name="DocumentCollectionView"
                          ToolTip="Подборка документов для работы" 
-                         BorderBrush="Black"/>
+                         BorderBrush="Black"
+                         ItemsSource="{Binding MainModel.DocumentCollection.Documents}"
+                         DisplayMemberPath="Title"/>
             </Grid>
         </GroupBox>
 
@@ -215,6 +247,12 @@
                                     Padding="0">
                                 
                             </Button>
+
+                            <Button x:Name="ClearTreeButton"
+                                    Content="X"
+                                    Padding="2 0">
+                                
+                            </Button>
                         </ToolBar>
 
                         <TreeView x:Name="ResponseTreeView"
@@ -237,7 +275,8 @@
                                                                    CommandParameter="{Binding ElementName=ResponseTreeView, Path=SelectedItem}"/>
                                 </behaviors:EventTrigger>
                                 <behaviors:EventTrigger EventName="MouseDoubleClick">
-                                    
+                                    <behaviors:InvokeCommandAction Command="{Binding AddDocumentToCollectionCommand}"
+                                                                   CommandParameter="{Binding ElementName=ResponseTreeView, Path=SelectedItem}"/>
                                 </behaviors:EventTrigger>
                             </behaviors:Interaction.Triggers>
                         </TreeView>

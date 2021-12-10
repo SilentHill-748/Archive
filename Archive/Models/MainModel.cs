@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 
 using Archive.Core;
 using Archive.Data.Entities;
+using Archive.Logic.Documents;
 
 namespace Archive.Models
 {
@@ -10,6 +11,7 @@ namespace Archive.Models
     {
         private ObservableCollection<Document> _storedDocuments;
         private ObservableCollection<Document> _findedDocuments;
+        private DocumentCollection _documentCollection;
         private string _chosenDocumentText;
         private string[] _keyWords;
 
@@ -18,6 +20,7 @@ namespace Archive.Models
         {
             _storedDocuments = new ObservableCollection<Document>();
             _findedDocuments = new ObservableCollection<Document>();
+            _documentCollection = new DocumentCollection();
 
             _chosenDocumentText = string.Empty;
             _keyWords = Array.Empty<string>();
@@ -30,11 +33,6 @@ namespace Archive.Models
         public ObservableCollection<Document> StoredDocument
         {
             get => _storedDocuments;
-            set
-            {
-                _storedDocuments = value;
-                OnPropertyChanged(nameof(StoredDocument));
-            }
         }
 
         /// <summary>
@@ -43,10 +41,15 @@ namespace Archive.Models
         public ObservableCollection<Document> FindedDocuments
         {
             get => _findedDocuments;
+        }
+
+        public DocumentCollection DocumentCollection
+        {
+            get => _documentCollection;
             set
             {
-                _findedDocuments = value;
-                OnPropertyChanged(nameof(FindedDocuments));
+                _documentCollection = value;
+                OnPropertyChanged(nameof(DocumentCollection));
             }
         }
 
