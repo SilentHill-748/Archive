@@ -247,18 +247,26 @@
                         </Grid.RowDefinitions>
 
                         <ToolBar Background="White" HorizontalAlignment="Left">
-                            <Button x:Name="AddToCollectionButton" Margin="0 0 4 0" Padding="0" ToolTip="Добавить документ.">
+                            <Button x:Name="AddToCollectionButton"
+                                    Margin="0 0 4 0" 
+                                    Padding="0" 
+                                    ToolTip="Добавить документ."
+                                    Command="{Binding AddDocumentToCollectionCommand}"
+                                    CommandParameter="{Binding ElementName=ResponseTreeView, Path=SelectedItem}">
                                 <Image Source="/Assets/add.png"/>
                             </Button>
 
-                            <Button x:Name="ClearTreeButton" Padding="0" ToolTip="Очистить список.">
+                            <Button x:Name="ClearTreeButton" 
+                                    Padding="0" 
+                                    ToolTip="Очистить список."
+                                    Command="{Binding ClearTreeCommand}">
                                 <Image Source="/Assets/deleteAll.png"/>
                             </Button>
                         </ToolBar>
 
                         <TreeView x:Name="ResponseTreeView"
                                   Grid.Row="1"
-                                  ItemsSource="{Binding MainModel.FindedDocuments}">
+                                  ItemsSource="{Binding MainModel.SelectedDocuments}">
                             <TreeView.ItemTemplate>
                                 <HierarchicalDataTemplate ItemsSource="{Binding RefDocuments}">
                                     <TextBlock Text="{Binding Title}"/>

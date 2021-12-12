@@ -38,7 +38,7 @@ namespace Archive.Models
         /// <summary>
         /// Вернёт список документов, найденных по паттерну поиска.
         /// </summary>
-        public ObservableCollection<Document> FindedDocuments
+        public ObservableCollection<Document> SelectedDocuments
         {
             get => _findedDocuments;
         }

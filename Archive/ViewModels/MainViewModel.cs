@@ -29,6 +29,7 @@ namespace Archive.ViewModels
             _setSearchMode = new RelayCommand(SetSearchMode);
             _addDocumentToCollectionCommand = new RelayCommand(AddDocumentToСollection, CanAddDocumentToCollection);
             _exitCommand = new RelayCommand(Exit);
+            _clearTreeCommand = new RelayCommand(ClearTree);
         }
 
         #region Properties
@@ -80,6 +81,12 @@ namespace Archive.ViewModels
         {
             get => _exitCommand;
         }
+
+        private readonly RelayCommand _clearTreeCommand;
+        public RelayCommand ClearTreeCommand
+        {
+            get => _clearTreeCommand;
+        }
         #endregion
 
 
@@ -89,13 +96,13 @@ namespace Archive.ViewModels
             // Тут commandParameter точно не будет null.
             string searchRequest = commandParameter?.ToString()!;
 
-            MainModel.FindedDocuments.Clear();
+            MainModel.SelectedDocuments.Clear();
 
             ISearchService searchService = ServiceFactory.GetService<ISearchService>(searchRequest);
             List<Document> findedDocuments = searchService.Search(SearchMode);
 
             foreach (Document document in findedDocuments)
-                MainModel.FindedDocuments.Add(document);
+                MainModel.SelectedDocuments.Add(document);
         }
 
         private bool CanStartSearch(object? commandParameter)
@@ -109,7 +116,7 @@ namespace Archive.ViewModels
             if ((commandParameter is not null) && 
                 (commandParameter is Document document))
             {
-                MainModel.FindedDocuments.Add(document);
+                MainModel.SelectedDocuments.Add(document);
             }
         }
 
@@ -120,7 +127,7 @@ namespace Archive.ViewModels
             {
                 if (commandParameter is Document document)
                     MainModel.Text = document.Text;
-                if (commandParameter is ReferenceDocument refDocument)
+                else if (commandParameter is ReferenceDocument refDocument)
                     MainModel.Text = refDocument.Text;
             }
         }
@@ -163,11 +170,17 @@ namespace Archive.ViewModels
             return commandParameter is not null && commandParameter is Document;
         }
 
+        private void ClearTree(object? commandParameter)
+        {
+            MainModel.SelectedDocuments.Clear();
+            MainModel.Text = string.Empty;
+        }
+
         // Метод для высвобождения загруженных ресурсов.
         private void Exit(object? commandParameter)
         {
             MainModel.DocumentCollection.Dispose();
-            MainModel.FindedDocuments.Clear();
+            MainModel.SelectedDocuments.Clear();
             MainModel.StoredDocument.Clear();
         }
     }
