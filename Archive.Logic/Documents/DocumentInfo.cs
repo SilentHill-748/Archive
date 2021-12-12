@@ -18,10 +18,12 @@ namespace Archive.Logic.Documents
             : this(arguments[0])
         {
             KeyWords = arguments[1];
-            References = arguments[2]
-                .Split(',')
-                .Select(x => (IDocumentInfo)new DocumentInfo(x))
-                .ToList();
+
+            if (arguments[2] != "")
+                References = arguments[2]
+                    .Split(',')
+                    .Select(x => (IDocumentInfo)new DocumentInfo(x))
+                    .ToList();
         }
 
 

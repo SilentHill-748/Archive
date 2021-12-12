@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using Archive.Logic.Interfaces;
 
 using Pdf = BitMiracle.Docotic.Pdf;
+
+using Tesseract;
 
 namespace Archive.Logic.Documents
 {
@@ -70,10 +73,33 @@ namespace Archive.Logic.Documents
         }
 
         // Получить текст из первого скана на первой странице с применением Tesseract.
-        private string GetTextFromImageOnFirstPage(Pdf.PdfImage image)
+        private static string GetTextFromImageOnFirstPage(Pdf.PdfImage image)
         {
-            // Заглушка
-            return string.Empty;
+            try
+            {
+                string tessdataPath = Directory.GetCurrentDirectory() + "\\tessdata";
+                byte[] imageBytes = GetImageBytes(image);
+
+                TesseractEngine tessEngine = new(tessdataPath, "rus");
+
+                return tessEngine
+                    .Process(Pix.LoadFromMemory(imageBytes))
+                    .GetText();
+            }
+            catch (Exception ex)
+            {
+                //logger.Log(ex);
+                throw;
+            }
+        }
+
+        private static byte[] GetImageBytes(Pdf.PdfImage image)
+        {
+            using MemoryStream memory = new();
+
+            image.Save(memory);
+
+            return memory.ToArray();
         }
     }
 }

@@ -41,8 +41,6 @@ namespace Archive.Logic.Services
         {
             List<IDocumentInfo> result = new();
 
-            string rootDir = GetDirectory();
-
             for (int i = 0; i < linesFromFile.Length; i++)
             {
                 string[] documentArgs = linesFromFile[i]
@@ -67,14 +65,10 @@ namespace Archive.Logic.Services
             for (int i = 0; i < arguments.Length; i++)
             {
                 var references = arguments[i]
-                    .Split(new char[] { ',', ' '}, StringSplitOptions.RemoveEmptyEntries)
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
                     .Where(x => File.Exists(rootDir + "\\" + x));
 
-                if (File.Exists(rootDir + "\\" + arguments[i])) // Если это одиночный файл, то это 1 аргумент (главный док)
-                {
-                    arguments[i] = rootDir + "\\" + arguments[i];
-                }
-                else if (references.Any()) // Иначе, если строка содержит множество файлов, то это ссылочные файлы.
+                if (references.Any()) // Иначе, если строка содержит множество файлов, то это ссылочные файлы.
                 {
                     arguments[i] = string.Join(",", references.Select(filename => rootDir + "\\" + filename));
                 }
