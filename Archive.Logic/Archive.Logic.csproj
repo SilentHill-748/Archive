@@ -22,6 +22,7 @@
   <ItemGroup>
     <PackageReference Include="BitMiracle.Docotic.Pdf" Version="8.3.12622" />
     <PackageReference Include="FreeSpire.Doc" Version="9.9.7" />
+    <PackageReference Include="Tesseract" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>
