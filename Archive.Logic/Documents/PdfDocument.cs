@@ -6,9 +6,6 @@ using Archive.Logic.Interfaces;
 
 using Pdf = BitMiracle.Docotic.Pdf;
 
-using Tesseract;
-using System.IO;
-
 namespace Archive.Logic.Documents
 {
     public sealed class PdfDocument : ITextDocument
@@ -66,34 +63,17 @@ namespace Archive.Logic.Documents
         {
             Pdf.PdfPage page = _pdfDocument.Pages[0];
 
-            string pageText = page.GetText().Replace("\n", "").Replace("\r", "");
-
-            // Если первая страница имеет Image и не имеет текста (или текст из пустых строк)
-            if (page.GetImages().Any() && string.IsNullOrWhiteSpace(pageText))
+            if (page.GetImages().Any())
                 return GetTextFromImageOnFirstPage(page.GetImages().First());
 
             return _pdfDocument.GetText();
         }
 
         // Получить текст из первого скана на первой странице с применением Tesseract.
-        private static string GetTextFromImageOnFirstPage(Pdf.PdfImage image)
+        private string GetTextFromImageOnFirstPage(Pdf.PdfImage image)
         {
-            try
-            {
-                TesseractEngine tessEngine = new("\\tessdata", "rus");
-
-                using MemoryStream memoryStream = new();
-                image.Save(memoryStream);
-
-                return tessEngine
-                    .Process(Pix.LoadFromMemory(memoryStream.GetBuffer()))
-                    .GetText();
-            }
-            catch (Exception ex)
-            {
-                // logger.Log(ex);
-                throw;
-            }
+            // Заглушка
+            return string.Empty;
         }
     }
 }
