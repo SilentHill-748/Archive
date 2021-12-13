@@ -29,10 +29,7 @@ namespace Archive.Logic.Services
 
         public List<Document> Search(SearchMode mode)
         {
-            List<Document> allDocuments = _database.UnitOfWork
-                .GetRepository<Document>()
-                .GetAll()
-                .ToList();
+            List<Document> allDocuments = _database.GetAll();
 
             if ((allDocuments.Count == 0) || 
                 (_searchRequest == string.Empty))
