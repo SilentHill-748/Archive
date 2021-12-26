@@ -39,11 +39,8 @@ namespace Archive.Logic.Documents
 
             if (!Documents.Contains(document))
             {
-                document.Text = "";
-
                 foreach (ReferenceDocument refDocument in document.RefDocuments)
                 {
-                    refDocument.Text = "";
                     refDocument.Documents = new();
                 }
                 Documents.Add(document);

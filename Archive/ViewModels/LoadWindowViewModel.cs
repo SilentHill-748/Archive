@@ -28,6 +28,10 @@ namespace Archive.ViewModels
             _model = new LoadWindowModel();
             _builderService = ServiceFactory.GetService<IDocumentBuilderService<Document>>();
             _dbService = ServiceFactory.GetService<IDbService>();
+
+            _loadFilesCommand = new RelayCommand(LoadFilesAsync, CanLoadFiles);
+            _selectPathCommand = new RelayCommand(SelectPath);
+            _closeCommand = new RelayCommand(CloseView);
         }
 
 
@@ -39,19 +43,19 @@ namespace Archive.ViewModels
         private readonly RelayCommand _loadFilesCommand;
         public RelayCommand LoadFilesCommand
         {
-            get => _loadFilesCommand ?? new RelayCommand(LoadFilesAsync, CanLoadFiles);
+            get => _loadFilesCommand;
         }
 
         private readonly RelayCommand _selectPathCommand;
         public RelayCommand SelectPathCommand
         {
-            get => _selectPathCommand ?? new RelayCommand(SelectPath, o => true);
+            get => _selectPathCommand;
         }
 
         private readonly RelayCommand _closeCommand;
         public RelayCommand CloseCommand
         {
-            get => _closeCommand ?? new RelayCommand(CloseView);
+            get => _closeCommand;
         }
         #endregion
 
