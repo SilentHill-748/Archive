@@ -10,15 +10,17 @@ using Archive.Logic.Services.Interfaces;
 using Archive.Logic.Interfaces;
 using Archive.Data.Entities;
 using System.Collections;
+using System.Text;
 
 namespace Archive.Logic.Documents
 {
-    [XmlRoot("DocumentCollection")]
+    [Serializable]
     public class DocumentCollection : IDocumentCollection<Document>
     {
         private ObservableCollection<Document> _documentCollection;
         private IPrintService? _printService;
         private bool disposedValue;
+
 
         public DocumentCollection()
         {
@@ -75,7 +77,6 @@ namespace Archive.Logic.Documents
             Stream fileStream = File.OpenRead(filename);
 
             XmlSerializer serializer = new(typeof(DocumentCollection));
-
             DocumentCollection? collection = (DocumentCollection?)serializer.Deserialize(fileStream);
 
             if (collection is null)

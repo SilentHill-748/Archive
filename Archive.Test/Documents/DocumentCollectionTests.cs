@@ -83,7 +83,7 @@ namespace Archive.Test.Documents
         [Test]
         public void ShouldSaveDocumentCollectionToXmlFileTest()
         {
-            string savedXmlFilePath = "F:\\SavedTestCollection2.xml";
+            string savedXmlFilePath = "D:\\SavedTestCollection.xml";
             using DocumentCollection expected = GetCollection();
 
             expected.SaveCollection(savedXmlFilePath);
@@ -94,7 +94,7 @@ namespace Archive.Test.Documents
         [Test]
         public void ShouldLoadDocumentCollectionFromXmlFileTest()
         {
-            string savedXmlFilePath = "F:\\SavedTestCollection.xml";
+            string savedXmlFilePath = "D:\\SavedTestCollection.xml";
             
             using DocumentCollection expected = GetCollection();
             using DocumentCollection actual = new();

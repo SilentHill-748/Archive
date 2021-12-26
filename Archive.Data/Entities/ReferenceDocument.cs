@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace Archive.Data.Entities
 {
@@ -11,6 +12,7 @@ namespace Archive.Data.Entities
         public int Number { get; set; }
         public string Title { get; set; } = string.Empty;
         public string Path { get; set; } = string.Empty;
+        [XmlIgnore]
         public string Text { get; set; } = string.Empty;
 
         public List<Document> Documents { get; set; } = new();
