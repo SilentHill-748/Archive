@@ -49,7 +49,6 @@
             </MenuItem>
 
             <MenuItem Header="Информация" Background="White">
-                <MenuItem Header="Справка"/>
                 <MenuItem Name="AboutItem"
                           Header="О программе..."
                           Click="AboutItem_Click"/>

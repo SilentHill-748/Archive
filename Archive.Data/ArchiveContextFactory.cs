@@ -11,17 +11,11 @@ namespace Archive.Data
         {
             Stream jsonStream = GetJsonStream();
 
-            string dbProvider = "MSSQL";
-
-#if RELEASE
-            dbProvider = "Sqlite";
-#endif
-
             ConfigurationBuilder builder = new();
             IConfigurationRoot root = builder.AddJsonStream(jsonStream).Build();
 
             DbContextOptionsBuilder<ArchiveContext> optionsBuilder = new();
-            optionsBuilder.UseSqlServer(root.GetConnectionString(dbProvider)).EnableSensitiveDataLogging();
+            optionsBuilder.UseSqlite(root.GetConnectionString("Sqlite")).EnableSensitiveDataLogging();
 
             return new ArchiveContext(optionsBuilder.Options);
         }

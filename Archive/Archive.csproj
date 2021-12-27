@@ -8,6 +8,7 @@
 	<UseWindowsForms>true</UseWindowsForms>
 	<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 	<ApplicationIcon>Assets\icon.ico</ApplicationIcon>
+
   </PropertyGroup>
 
   <ItemGroup>

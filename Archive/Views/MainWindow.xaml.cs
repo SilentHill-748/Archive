@@ -44,8 +44,8 @@ namespace Archive.Views
 
         private void AboutItem_Click(object sender, RoutedEventArgs e)
         {
-            string text = "Данная программа разработа под заказ для [ClentName]." +
-                "\n\nИсполнитель: Студент ЛФ ПНИПУ Палин Никита\n\n\t\t© Silent Hill";
+            string text = "Научный проект «Правовая охрана морских млекопитающих в Российской Федерации: состояние, " +
+                "тенденции и перспективы», поддержанный РФФИ № 19-011-00282";
             MessageBox.Show(text, "О программе", 
                 MessageBoxButton.OK, MessageBoxImage.Information);
         }
