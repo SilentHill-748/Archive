@@ -1,5 +1,6 @@
 {
   "ConnectionStrings": {
+    "Sqlite": "DataSource=Data\\acrhive.db;Mode=ReadWrite;Cache=Private;",
     "MSSQL": "Server=localhost;Database=Archive;User=Silent;Password=Silent748;"
   }
 }
