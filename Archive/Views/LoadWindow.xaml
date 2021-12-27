@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Archive.Views"
         xmlns:VM="clr-namespace:Archive.ViewModels"
         mc:Ignorable="d"
-        Title="Загрузить документы..."
+        Title="Загрузка документов"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         FontSize="15"

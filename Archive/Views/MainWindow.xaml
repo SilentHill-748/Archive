@@ -8,7 +8,7 @@
         xmlns:VM="clr-namespace:Archive.ViewModels"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Главное окно программы" 
+        Title="Научный проект «Правовая охрана морских млекопитающих»" 
         MinHeight="620"
         MinWidth="1015"
         Height="620"
