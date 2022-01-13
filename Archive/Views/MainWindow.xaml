@@ -46,6 +46,8 @@
                 <MenuItem Name="OpenLoadWindowItem"
                           Header="Загрузить из каталога"
                           Click="OpenLoadWindowItem_Click"/>
+                <MenuItem Header="Очистить базу"
+                          Command="{Binding CleanDatabaseCommand}"/>
             </MenuItem>
 
             <MenuItem Header="Информация" Background="White">

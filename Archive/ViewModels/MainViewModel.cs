@@ -8,6 +8,7 @@ using Archive.Logic;
 using Archive.Logic.Services.Interfaces;
 using Archive.Logic.Services;
 using Archive.Data.Entities;
+using System;
 
 namespace Archive.ViewModels
 {
@@ -30,6 +31,7 @@ namespace Archive.ViewModels
             _addDocumentToCollectionCommand = new RelayCommand(AddDocumentToСollection, CanAddDocumentToCollection);
             _exitCommand = new RelayCommand(Exit);
             _clearTreeCommand = new RelayCommand(ClearTree);
+            _cleanDbCommand = new RelayCommand(CleanDatabase, CanCleanDatabase);
         }
 
         #region Properties
@@ -86,6 +88,12 @@ namespace Archive.ViewModels
         public RelayCommand ClearTreeCommand
         {
             get => _clearTreeCommand;
+        }
+
+        private readonly RelayCommand _cleanDbCommand;
+        public RelayCommand CleanDatabaseCommand
+        {
+            get => _cleanDbCommand;
         }
         #endregion
 
@@ -174,6 +182,20 @@ namespace Archive.ViewModels
         {
             MainModel.SelectedDocuments.Clear();
             MainModel.Text = string.Empty;
+        }
+
+        private void CleanDatabase(object? commandParameter)
+        {
+            _databaseService.UnitOfWork.DbContext.Database.EnsureDeleted();
+            _databaseService.UnitOfWork.DbContext.Database.EnsureCreated();
+
+            MainModel.StoredDocument.Clear();
+            MainModel.KeyWords = Array.Empty<string>();
+        }
+
+        private bool CanCleanDatabase(object? commandParameter)
+        {
+            return MainModel.StoredDocument.Count > 0;
         }
 
         // Метод для высвобождения загруженных ресурсов.
