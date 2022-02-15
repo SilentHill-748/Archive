@@ -24,15 +24,17 @@ namespace Archive.Data
 
         public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
         {
-            if (_repositories is null)
-                _repositories = new Dictionary<Type, object>();
+            //if (_repositories is null)
+            //    _repositories = new Dictionary<Type, object>();
 
-            Type entityType = typeof(TEntity);
+            //Type entityType = typeof(TEntity);
 
-            if (!_repositories.ContainsKey(entityType))
-                _repositories[entityType] = new GenericRepository<TEntity>(DbContext);
-            
-            return (IRepository<TEntity>)_repositories[entityType];
+            //if (!_repositories.ContainsKey(entityType))
+            //    _repositories[entityType] = new GenericRepository<TEntity>(DbContext);
+
+            //return (IRepository<TEntity>)_repositories[entityType];
+
+            return new GenericRepository<TEntity>(DbContext);
         }
 
         public int SaveChanges()

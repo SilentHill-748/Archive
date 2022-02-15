@@ -8,9 +8,6 @@ using Archive.Logic.Documents;
 
 namespace Archive.ViewModels
 {
-    /// <summary>
-    /// Модель представления подборки документов.
-    /// </summary>
     public class DocumentCollectionViewModel
     {
         public DocumentCollectionViewModel(MainModel mainModel)
@@ -116,8 +113,16 @@ namespace Archive.ViewModels
             SaveFileDialog sfd = new();
             sfd.Filter = "XML Files | *.xml";
 
-            if (sfd.ShowDialog() == true)
-                MainModel.DocumentCollection.SaveCollection(sfd.FileName);
+            try
+            {
+                if (sfd.ShowDialog() == true)
+                    MainModel.DocumentCollection.SaveCollection(sfd.FileName);
+            }
+            catch (System.Exception ex)
+            {
+                HandleException(ex);
+                throw;
+            }
         }
 
         private void LoadCollection(object? commandParameter)
@@ -125,11 +130,19 @@ namespace Archive.ViewModels
             OpenFileDialog ofd = new();
             ofd.Filter = "XML Files | *.xml";
 
-            if (ofd.ShowDialog() == true)
+            try
             {
-                DocumentCollection dc = new();
-                dc.LoadCollection(ofd.FileName);
-                MainModel.DocumentCollection = dc;
+                if (ofd.ShowDialog() == true)
+                {
+                    DocumentCollection dc = new();
+                    dc.LoadCollection(ofd.FileName);
+                    MainModel.DocumentCollection = dc;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                HandleException(ex);
+                throw;
             }
         }
 
@@ -138,8 +151,16 @@ namespace Archive.ViewModels
             SaveFileDialog sfd = new();
             sfd.Filter = "Text Files | *.txt";
 
-            if (sfd.ShowDialog() == true)
-                MainModel.DocumentCollection.ExportCollection(sfd.FileName);
+            try
+            {
+                if (sfd.ShowDialog() == true)
+                    MainModel.DocumentCollection.ExportCollection(sfd.FileName);
+            }
+            catch (System.Exception ex)
+            {
+                HandleException(ex);
+                throw;
+            }
         }
 
         private void PrintAllCollection(object? commandParameter)
@@ -150,9 +171,18 @@ namespace Archive.ViewModels
             }
             catch (System.Exception ex)
             {
-                MessageBox.Show("Произошла ошибка с текстом:\n" + ex.Message, "Ошибка", 
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                HandleException(ex);
+                throw;
             }
+        }
+
+        private static void HandleException(System.Exception exception)
+        {
+            MessageBox.Show(
+                "Возникла ошибка с тестом:\n" + exception.Message, 
+                "Ошибка", 
+                MessageBoxButton.OK, 
+                MessageBoxImage.Error);
         }
     }
 }

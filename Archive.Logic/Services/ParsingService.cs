@@ -64,16 +64,14 @@ namespace Archive.Logic.Services
             // Настройка корректных путей к файлам, удаление из ключевых слов пробелов и перевод их в нижний регистр.
             for (int i = 0; i < arguments.Length; i++)
             {
-                var references = arguments[i]
-                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
-                    .Where(x => File.Exists(rootDir + "\\" + x));
-
-                if (references.Any()) // Иначе, если строка содержит множество файлов, то это ссылочные файлы.
+                arguments[i] = i switch
                 {
-                    arguments[i] = string.Join(",", references.Select(filename => rootDir + "\\" + filename));
-                }
-                else // Иначе, если это точно не файл/файлы, то это ключевые слова.
-                    arguments[i] = arguments[i].ToLower();
+                    0 => $"{rootDir}\\{arguments[i]}",
+                    1 => arguments[i].ToLower().Replace(" ", ""),
+                    _ => string.Join(",", arguments[i]
+                                            .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                                .Select(filename => $"{rootDir}\\{filename}"))
+                };
             }
 
             return arguments;

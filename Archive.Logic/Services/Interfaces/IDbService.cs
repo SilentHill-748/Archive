@@ -11,5 +11,7 @@ namespace Archive.Logic.Services.Interfaces
         IUnitOfWork<ArchiveContext> UnitOfWork { get; }
 
         List<Document> GetAll();
+        bool DropDatabase();
+        bool CreateDatabase();
     }
 }

@@ -20,14 +20,12 @@ namespace Archive.ViewModels
     {
         private readonly LoadWindowModel _model;
         private readonly IDocumentBuilderService<Document> _builderService;
-        private readonly IDbService _dbService;
 
 
         public LoadWindowViewModel()
         {
             _model = new LoadWindowModel();
             _builderService = ServiceFactory.GetService<IDocumentBuilderService<Document>>();
-            _dbService = ServiceFactory.GetService<IDbService>();
 
             _loadFilesCommand = new RelayCommand(LoadFilesAsync, CanLoadFiles);
             _selectPathCommand = new RelayCommand(SelectPath);
@@ -68,27 +66,38 @@ namespace Archive.ViewModels
             {
                 await Task.Run(() =>
                 {
-                    if (_dbService.UnitOfWork.DbContext.Set<Document>().Any())
-                        return;
+                    try
+                    {
+                        if (App.DbService.UnitOfWork.DbContext.Set<Document>().Any())
+                            return;
 
-                    _builderService.Builded += BuilderService_Builded;
+                        _builderService.Builded += BuilderService_Builded;
 
-                    List<Document> documents = _builderService.Build(Model.ConfigurationFilePath);
+                        List<Document> documents = _builderService.Build(Model.ConfigurationFilePath);
 
-                    _dbService.UnitOfWork.GetRepository<Document>().Add(documents);
-                    _ = _dbService.UnitOfWork.SaveChanges();
-                }
-                ).ConfigureAwait(true);
+                        App.DbService.UnitOfWork.GetRepository<Document>().Add(documents);
+                        _ = App.DbService.UnitOfWork.SaveChanges();
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                });
 
                 GC.Collect();
                 CloseView(commandParameter);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", 
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(
+                    "Возникла ошибка с текстом:\n" + ex.Message, 
+                    "Ошибка", 
+                    MessageBoxButton.OK, 
+                    MessageBoxImage.Error);
 
-                //_logger.Log(ex)
+                CloseView(commandParameter);
+
+                throw;
             }
         }
 

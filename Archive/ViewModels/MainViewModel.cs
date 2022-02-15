@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Windows;
+using System.Linq;
 using System.Windows.Controls;
 using System.Collections.Generic;
 
@@ -8,21 +10,18 @@ using Archive.Logic;
 using Archive.Logic.Services.Interfaces;
 using Archive.Logic.Services;
 using Archive.Data.Entities;
-using System;
 
 namespace Archive.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
         private readonly MainModel _model;
-        private readonly IDbService _databaseService;
 
 
         public MainViewModel()
         {
             _model = new MainModel();
 
-            _databaseService = ServiceFactory.GetService<IDbService>();
             _startCommand = new RelayCommand(StartSearch, CanStartSearch);
             _selectDocumentCommand = new RelayCommand(SelectCommandToResponceTreeView);
             _showDocumentTextCommand = new RelayCommand(ShowDocumentText);
@@ -106,11 +105,19 @@ namespace Archive.ViewModels
 
             MainModel.SelectedDocuments.Clear();
 
-            ISearchService searchService = ServiceFactory.GetService<ISearchService>(searchRequest);
-            List<Document> findedDocuments = searchService.Search(SearchMode);
+            try
+            {
+                ISearchService searchService = ServiceFactory.GetService<ISearchService>(searchRequest);
+                List<Document> findedDocuments = searchService.Search(SearchMode);
 
-            foreach (Document document in findedDocuments)
-                MainModel.SelectedDocuments.Add(document);
+                foreach (Document document in findedDocuments)
+                    MainModel.SelectedDocuments.Add(document);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+                throw;
+            }
         }
 
         private bool CanStartSearch(object? commandParameter)
@@ -156,14 +163,22 @@ namespace Archive.ViewModels
 
         private void LoadAllDocuments(object? commandParameter)
         {
-            List<Document> documents = _databaseService.GetAll();
+            try
+            {
+                List<Document> documents = App.DbService.GetAll();
 
-            MainModel.StoredDocument.Clear();
+                MainModel.StoredDocument.Clear();
 
-            foreach (Document document in documents)
-                MainModel.StoredDocument.Add(document);
+                foreach (Document document in documents)
+                    MainModel.StoredDocument.Add(document);
 
-            MainModel.KeyWords = documents.Select(x => x.KeyWords).ToArray();
+                MainModel.KeyWords = documents.Select(x => x.KeyWords).ToArray();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+                throw;
+            }
         }
 
         private void AddDocumentToСollection(object? commandParameter)
@@ -186,11 +201,26 @@ namespace Archive.ViewModels
 
         private void CleanDatabase(object? commandParameter)
         {
-            _databaseService.UnitOfWork.DbContext.Database.EnsureDeleted();
-            _databaseService.UnitOfWork.DbContext.Database.EnsureCreated();
+            try
+            {
+                _ = App.DbService.DropDatabase();
 
-            MainModel.StoredDocument.Clear();
-            MainModel.KeyWords = Array.Empty<string>();
+                bool isCreated = App.DbService.CreateDatabase();
+
+                if (isCreated)
+                {
+                    MainModel.StoredDocument.Clear();
+                    MainModel.KeyWords = Array.Empty<string>();
+                }
+                else
+                    throw new InvalidOperationException("Не удалось очистить базу данных! " +
+                        "Вероятно файл БД отсутствует или занят другим процессом!");
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+                throw;
+            }
         }
 
         private bool CanCleanDatabase(object? commandParameter)
@@ -204,6 +234,15 @@ namespace Archive.ViewModels
             MainModel.DocumentCollection.Dispose();
             MainModel.SelectedDocuments.Clear();
             MainModel.StoredDocument.Clear();
+        }
+
+        private void HandleException(Exception exception)
+        {
+            MessageBox.Show(
+                "Возникла ошибка с текстом:\n" + exception.Message,
+                "Ошибка",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
         }
     }
 }

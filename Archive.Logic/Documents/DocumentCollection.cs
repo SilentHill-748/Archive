@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml.Serialization;
+using System.Collections;
 
 using Archive.Logic.Services;
 using Archive.Logic.Services.Interfaces;
 using Archive.Logic.Interfaces;
 using Archive.Data.Entities;
-using System.Collections;
-using System.Text;
 
 namespace Archive.Logic.Documents
 {

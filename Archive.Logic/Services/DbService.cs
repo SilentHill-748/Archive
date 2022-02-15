@@ -28,5 +28,17 @@ namespace Archive.Logic.Services
                 .GetAll(d => d.Include(x => x.RefDocuments))
                 .ToList();
         }
+
+        public bool DropDatabase()
+        {
+            UnitOfWork.DbContext.ChangeTracker.Clear();
+            
+            return UnitOfWork.DbContext.Database.EnsureDeleted();
+        }
+
+        public bool CreateDatabase()
+        {
+            return UnitOfWork.DbContext.Database.EnsureCreated();
+        }
     }
 }
